@@ -146,16 +146,25 @@ svg > text {
 }
  
  @-webkit-keyframes draw {
+  0%{
+    opacity:1;
+  }
   100% {
     stroke-dashoffset: 0;
   }
 }
  @-moz-keyframes draw {
+  0%{
+    opacity:1;
+  }
   100% {
     stroke-dashoffset: 0;
   }
 }
  @-ms-keyframes draw {
+  0%{
+    opacity:1;
+  }
   100% {
     stroke-dashoffset: 0;
   }
