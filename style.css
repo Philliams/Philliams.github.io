@@ -1,0 +1,122 @@
+@font-face {
+    font-family: Mont Serrat Thin;
+    src: url(/fonts/montserrat/Montserrat-Hairline.otf);
+}
+@font-face {
+    font-family: Mont Serrat Light;
+    src: url(/fonts/montserrat/Montserrat-Light.otf);
+}
+@font-face {
+    font-family: Raleway Light;
+    src: url(/fonts/Raleway/Raleway-Regular.ttf);
+}
+@font-face {
+    font-family: Raleway Thin;
+    src: url(/fonts/Raleway/Raleway-Thin.ttf);
+}
+@font-face {
+    font-family: Raleway Bold;
+    src: url(/fonts/Raleway/Raleway-Bold.ttf);
+}
+@font-face {
+    font-family: Crimson Italic;
+    src: url(/fonts/Crimson_Text/CrimsonText-Italic.ttf);
+}
+@font-face {
+    font-family: Damion;
+    src: url(/fonts/Damion/Damion-Regular.ttf);
+}
+@font-face {
+    font-family: Alfa;
+    src: url(/fonts/Alfa_Slab_one/AlfaSlabOne-Regular.ttf);
+}
+@font-face {
+    font-family: Fjalla;
+    src: url(/fonts/Fjalla_One/FjallaOne-Regular.ttf);
+}
+
+
+body{
+  margin-bottom:-10px;
+  background-image: url("/images/DeathtoStock_Wired/DeathtoStock_Wired8_min.jpg");
+  background-position: 70% 50%;
+  background-attachment: fixed;
+  background-size:cover;
+  background-repeat: no-repeat; 
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+svg > text {
+   fill:#36454f;
+   font-weight:bolder;
+}
+
+.center-paragraph{
+  margin-top:20px;
+  text-align: center;
+  font-size:150%;
+}
+
+.center-paragraph-bold{
+  margin-top:20px;
+  text-align: center;
+  font-size:150%;
+}
+.center-paragraph-close{
+  margin-top:0px;
+  text-align: center;
+  font-size:150%;
+}
+
+#logo {
+  margin-top:1%;
+  color:#F34545;
+  font-size: 250%;
+  font-family:Mont Serrat Light;
+  text-align: center;
+}
+
+.fade-in {
+  -webkit-animation: fade 1s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+ @-webkit-keyframes fade {
+  0 %{
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.path {
+  -webkit-animation: draw 3.5s linear;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.path-slow {
+  -webkit-animation: draw 5s .5;
+  -webkit-animation-fill-mode: forwards;
+}
+ 
+ @-webkit-keyframes draw {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
