@@ -151,6 +151,7 @@ svg > text {
   }
   100% {
     stroke-dashoffset: 0;
+    opacity:1;
   }
 }
  @-moz-keyframes draw {
@@ -159,6 +160,7 @@ svg > text {
   }
   100% {
     stroke-dashoffset: 0;
+    opacity:1;
   }
 }
  @-ms-keyframes draw {
@@ -167,5 +169,6 @@ svg > text {
   }
   100% {
     stroke-dashoffset: 0;
+    opacity:1;
   }
 }
