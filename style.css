@@ -94,6 +94,10 @@ svg > text {
 .fade-in {
   -webkit-animation: fade 1s;
   -webkit-animation-fill-mode: forwards;
+  -moz-animation: fade 1s;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation: fade 1s;
+  -ms-animation-fill-mode: forwards;
 }
 
  @-webkit-keyframes fade {
@@ -105,17 +109,53 @@ svg > text {
   }
 }
 
+ @-moz-keyframes fade {
+  0 %{
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+ @-ms-keyframes fade {
+  0 %{
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .path {
   -webkit-animation: draw 3.5s linear;
   -webkit-animation-fill-mode: forwards;
+  -moz-animation: draw 3.5s linear;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation: draw 3.5s linear;
+  -ms-animation-fill-mode: forwards;
 }
 
 .path-slow {
   -webkit-animation: draw 5s .5;
   -webkit-animation-fill-mode: forwards;
+  -moz-animation: draw 5s .5;
+  -moz-animation-fill-mode: forwards;
+  -ms-animation: draw 5s .5;
+  -ms-animation-fill-mode: forwards;
 }
  
  @-webkit-keyframes draw {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+ @-moz-keyframes draw {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+ @-ms-keyframes draw {
   100% {
     stroke-dashoffset: 0;
   }
