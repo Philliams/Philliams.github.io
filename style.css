@@ -60,11 +60,12 @@ a:hover {
 a:active {
     text-decoration: none;
 }
-
+/*
 svg > text {
    fill:#36454f;
    font-weight:bolder;
 }
+*/
 
 .center-paragraph{
   margin-top:20px;
