@@ -195,6 +195,6 @@ keyframes draw {
     opacity:1;
   }
 }
-.invert:hover{
+.invert{
   fill:red;
 }
