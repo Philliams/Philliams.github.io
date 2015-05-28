@@ -199,3 +199,6 @@ keyframes draw {
 svg > a > text:hover{
   fill:white;
 }
+svg > a > image:hover{
+  -webkit-filter: invert(100%);
+}
