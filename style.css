@@ -195,6 +195,6 @@ keyframes draw {
     opacity:1;
   }
 }
-.invert{
+svg > a > text{
   fill:red;
 }
