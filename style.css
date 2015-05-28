@@ -196,6 +196,6 @@ keyframes draw {
     opacity:1;
   }
 }
-svg > a > text{
-  fill:red;
+svg > a > text:hover{
+  fill:white;
 }
