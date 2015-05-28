@@ -53,6 +53,19 @@
 <body>
 <div class="container-fluid" style="padding:0px;width:100%;">
   <svg style="width:100%;height:1900px;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="420" viewBox="0 0 100 420">
+
+    <!-- ==================== Filter ================= -->
+
+    <defs>
+    <filter id="matrix-invert">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="-1 0 0 0 1 
+                                                              0 -1 0 0 1 
+                                                              0 0 -1 0 1
+                                                              0 0 0 1 0"/>
+   </filter>
+  </defs>
+
+
     <!-- ==================== Text ==================== -->
 
     <text style="font-family:Mont Serrat Thin;text-anchor:middle;font-size:8px;"<tspan x="50" y="20">Hello, My Name is Phillip Williams</tspan></text>
