@@ -195,11 +195,6 @@ keyframes draw {
     opacity:1;
   }
 }
-.invert {
-  opacity:0;
+.invert:hover{
+  fill:red;
 }
-
-.invert:hover {
-   -webkit-filter: invert(1);
-   filter: invert(1);
-   }
