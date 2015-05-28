@@ -200,5 +200,5 @@ svg > a > text:hover{
   fill:white;
 }
 svg > a > image:hover{
-  xlink:href="/images/GitHub-Mark/PNG/GitHub-Mark-Light-120px-plus.png"
+  href="/images/GitHub-Mark/PNG/GitHub-Mark-Light-120px-plus.png"
 }
