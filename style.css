@@ -1,204 +1,184 @@
-@font-face {
-    font-family: Mont Serrat Thin;
-    src: url(/fonts/montserrat/Montserrat-Hairline.otf);
-}
-@font-face {
-    font-family: Mont Serrat Light;
-    src: url(/fonts/montserrat/Montserrat-Light.otf);
-}
-@font-face {
-    font-family: Raleway Light;
-    src: url(/fonts/Raleway/Raleway-Regular.ttf);
-}
-@font-face {
-    font-family: Raleway Thin;
-    src: url(/fonts/Raleway/Raleway-Thin.ttf);
-}
-@font-face {
-    font-family: Raleway Bold;
-    src: url(/fonts/Raleway/Raleway-Bold.ttf);
-}
-@font-face {
-    font-family: Crimson Italic;
-    src: url(/fonts/Crimson_Text/CrimsonText-Italic.ttf);
-}
-@font-face {
-    font-family: Damion;
-    src: url(/fonts/Damion/Damion-Regular.ttf);
-}
-@font-face {
-    font-family: Alfa;
-    src: url(/fonts/Alfa_Slab_one/AlfaSlabOne-Regular.ttf);
-}
-@font-face {
-    font-family: Fjalla;
-    src: url(/fonts/Fjalla_One/FjallaOne-Regular.ttf);
+	p    {
+		margin:0;
+		font-family: Courier New;
+		color : green;
+	}
+  pre    {
+    margin:0;
+    width:100%;
+    text-align: center;
+    font-family: Courier New;
+    color : green;
+  }
+
+  h1    {
+    margin:0;
+    font-family: Courier New;
+    color : green;
+
+  }
+
+  iframe {
+    height : 90%;
+    width : 90% ;
+    margin:0;
+    padding:0;
+    top:5%;
+    left:5%;
+    position: fixed;
+  }
+
+  #canvas {
+    background : black;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -10;
+  }
+
+  #faux-terminal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4000;
+    pointer-events: none;
+  }
+  #faux-terminal:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4010;
+    background: -webkit-linear-gradient(#444 50%, #000 50%);
+    background: linear-gradient(#444 50%, #000 50%);
+    background-size: 100% 4px;
+    background-repeat: repeat-y;
+    opacity: .14;
+    box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.8);
+  }
+  #faux-terminal:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4011;
+    background-color: #00C853;
+    box-shadow: inset 0px 0px 4px 4px rgba(100, 100, 100, 0.5);
+    opacity: .1;
+  }
+  #faux-terminal .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4100;
+  }
+  #faux-terminal .overlay:before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 5px;
+    background: #fff;
+    background: -webkit-linear-gradient(to bottom, rgba(255, 0, 0, 0) 0%, snow 50%, rgba(255, 255, 255, 0.98) 51%, rgba(255, 0, 0, 0) 100%);
+    background: linear-gradient(to bottom, rgba(255, 0, 0, 0) 0%, snow 50%, rgba(255, 255, 255, 0.98) 51%, rgba(255, 0, 0, 0) 100%);
+    opacity: .1;
+    -webkit-animation: vline 10s linear infinite;
+    animation: vline 10s linear infinite;
+  }
+  #faux-terminal .overlay:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 51px;
+    box-shadow: 0 2px 6px rgba(25, 25, 25, 0.2), inset 0 1px rgba(50, 50, 50, 0.1), inset 0 3px rgba(50, 50, 50, 0.05), inset 0 3px 8px rgba(64, 64, 64, 0.05), inset 0 -5px 10px rgba(25, 25, 25, 0.1);
+  }
+
+  @-webkit-keyframes vline {
+    0% {
+      top: 0px;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+  @keyframes vline {
+    0% {
+      top: 0px;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+
+  .blinking-cursor {
+  font-weight: 100;
+  color: green;
+  -webkit-animation: 1s blink step-end infinite;
+  -moz-animation: 1s blink step-end infinite;
+  -ms-animation: 1s blink step-end infinite;
+  -o-animation: 1s blink step-end infinite;
+  animation: 1s blink step-end infinite;
 }
 
-
-body{
-  margin-bottom:-10px;
-  background-image: url("/images/DeathtoStock_Wired8_min.jpg");
-  background-position: 70% 50%;
-  background-attachment: fixed;
-  background-size:cover;
-  background-repeat: no-repeat; 
-}
-
-a:link {
-    text-decoration: none;
-}
-
-a:visited {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: none;
-}
-
-a:active {
-    text-decoration: none;
-}
-/*
-svg > text {
-   fill:#36454f;
-   font-weight:bolder;
-}
-*/
-
-.center-paragraph{
-  margin-top:20px;
-  text-align: center;
-  font-size:150%;
-}
-
-.center-paragraph-bold{
-  margin-top:20px;
-  text-align: center;
-  font-size:150%;
-}
-.center-paragraph-close{
-  margin-top:0px;
-  text-align: center;
-  font-size:150%;
-}
-
-#logo {
-  margin-top:1%;
-  color:#F34545;
-  font-size: 250%;
-  font-family:Mont Serrat Light;
-  text-align: center;
-}
-
-.fade-in {
-  -webkit-animation: fade 1s;
-  -webkit-animation-fill-mode: forwards;
-  -moz-animation: fade 1s;
-  -moz-animation-fill-mode: forwards;
-  -ms-animation: fade 1s;
-  -ms-animation-fill-mode: forwards;
-  animation: fade 1s;
-  animation-fill-mode: forwards;
-}
-
- @-webkit-keyframes fade {
-  0 %{
-    opacity: 0;
+@keyframes "blink" {
+  from, to {
+    color: transparent;
   }
-  100% {
-    opacity: 1;
+  50% {
+    color: green;
   }
 }
 
- @-moz-keyframes fade {
-  0 %{
-    opacity: 0;
+@-moz-keyframes blink {
+  from, to {
+    color: transparent;
   }
-  100% {
-    opacity: 1;
-  }
-}
-
- @-ms-keyframes fade {
-  0 %{
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-keyframes fade {
-  0 %{
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
+  50% {
+    color: green;
   }
 }
 
-.path {
-  -webkit-animation: draw 3.5s linear;
-  -webkit-animation-fill-mode: forwards;
-  -moz-animation: draw 3.5s linear;
-  -moz-animation-fill-mode: forwards;
-  -ms-animation: draw 3.5s linear;
-  -ms-animation-fill-mode: forwards;
-  animation: draw 3.5s linear;
-  animation-fill-mode: forwards;
+@-webkit-keyframes "blink" {
+  from, to {
+    color: transparent;
+  }
+  50% {
+    color: green;
+  }
 }
 
-.path-slow {
-  -webkit-animation: draw 5s .5;
-  -webkit-animation-fill-mode: forwards;
-  -moz-animation: draw 5s .5;
-  -moz-animation-fill-mode: forwards;
-  -ms-animation: draw 5s .5;
-  -ms-animation-fill-mode: forwards;
-  animation: draw 5s .5;
-  animation-fill-mode: forwards;
-}
- 
- @-webkit-keyframes draw {
-  0%{
-    opacity:1;
+@-ms-keyframes "blink" {
+  from, to {
+    color: transparent;
   }
-  100% {
-    stroke-dashoffset: 0;
-    opacity:1;
+  50% {
+    color: green;
   }
 }
- @-moz-keyframes draw {
-  0%{
-    opacity:1;
+
+@-o-keyframes "blink" {
+  from, to {
+    color: transparent;
   }
-  100% {
-    stroke-dashoffset: 0;
-    opacity:1;
+  50% {
+    color: green;
   }
-}
- @-ms-keyframes draw {
-  0%{
-    opacity:1;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    opacity:1;
-  }
-}
-keyframes draw {
-  0%{
-    opacity:1;
-  }
-  100% {
-    stroke-dashoffset: 0;
-    opacity:1;
-  }
-}
-svg > a > text:hover{
-  fill:white;
-}
-svg > a > image:hover{
-  filter:url("#matrix-invert");
 }

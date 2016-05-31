@@ -1,0 +1,204 @@
+<!-- Q-learning prof of concept -->
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="./arraynet.js"></script>
+	<style>
+    body{
+      margin:0;
+      padding:0;
+    }
+    canvas {
+      margin:0;
+      padding:0;
+    }
+  </style>
+</head>
+<body>
+
+	<canvas id="canvas" width="200" height="200" style="border: 1px solid white;">
+		Your browser does not support the HTML5 canvas tag.
+	</canvas>
+
+</body>
+
+<script>
+
+function Player(e){
+	this.epsilon = e;
+	this.x = Math.random()*document.getElementById("canvas").width;
+	this.y = Math.random()*document.getElementById("canvas").height;
+	this.theta = Math.random()*Math.PI*2;
+
+	return this;
+
+}
+
+function indexOfMax(arr) {
+	var max = arr[0];
+	var index = 0;
+	for (var i = 1; i < arr.length; i++) {
+		if (arr[i] > max) {
+			index = i;
+			max = arr[i];
+		}
+	}
+	return index;
+}
+
+function reward( nn , p , otherP , reward , action){
+	var out = nn.feedForward([p.x,p.y,p.theta,otherP.x,otherP.y,otherP.theta]);
+	out[action] = reward;
+	nn.learn([p.x,p.y,p.theta,otherP.x,otherP.y,otherP.theta],out);
+}
+
+function chooseAction( nn , p , otherP) {
+	var actions = nn.feedForward([p.x,p.y,p.theta,otherP.x,otherP.y,otherP.theta]);
+	var action;
+	if(Math.random() > p.epsilon ) {
+		action = indexOfMax(actions);
+	}else{
+		action = Math.floor(Math.random() * (12));
+	}
+	if(action != 11){
+		//reward(nn,p,otherP,0.2,action);
+	}
+	var result = act(action,p,otherP,nn);
+	if(result[0]){
+		var c = document.getElementById("canvas");
+		var ctx = c.getContext("2d");
+		ctx.beginPath();
+		ctx.moveTo(p.x,p.y);
+		var to_x = p.x + Math.cos(p.theta) * 500;
+		var to_y = p.y + Math.sin(p.theta) * 500;
+		ctx.lineTo(to_x,to_y);
+		ctx.stroke();
+
+		var distance = Math.abs((to_y - p.y)*otherP.x - (to_x-p.x)*otherP.y+to_x*p.y-to_y*p.x)/Math.sqrt((to_y - p.y)*(to_y - p.y)+(to_x-p.x)*(to_x-p.x));
+		var flag = Math.cos(p.theta)*(otherP.x-p.x) >= 0;
+		if(distance <= 5 && flag){ // shot
+			reward(nn,p,otherP,1,action);
+			otherP.x = Math.random()*document.getElementById("canvas").width;
+			otherP.y = Math.random()*document.getElementById("canvas").height;
+			otherP.theta = Math.random()*Math.PI*2;
+		}else{
+			reward(nn,p,otherP,0.1,action);
+		}
+	}else{
+		reward(nn,p,otherP,result[1],action);
+	}
+	
+}
+
+function act(a , p , otherP , nn){
+	var v = 1.5;
+	var t = 0.05;
+	var shoot = false;
+	var to_x = p.x + Math.cos(p.theta) * 500;
+	var to_y = p.y + Math.sin(p.theta) * 500;
+	var distance = Math.abs((to_y - p.y)*otherP.x - (to_x-p.x)*otherP.y+to_x*p.y-to_y*p.x)/Math.sqrt((to_y - p.y)*(to_y - p.y)+(to_x-p.x)*(to_x-p.x));
+	var reward = 0.6/(distance+1);
+	var flag = Math.cos(p.theta)*(otherP.x-p.x) >= 0;
+	if(!flag){
+		reward = 0;
+	}
+
+	switch(a) {
+				case 0: // left (l)
+				p.theta += t;
+				break;
+				case 1: // right (r)
+				p.theta += -t;
+				break;
+				case 2: // forward (f)
+				p.x += v*Math.cos(p.theta);
+				p.y += v*Math.sin(p.theta);
+				break;
+				case 3: // shoot (s)
+				shoot = true;
+				break;
+				case 4: // r + f
+				p.theta += t;
+				p.x += v*Math.cos(p.theta);
+				p.y += v*Math.sin(p.theta);
+				break;
+				case 5:
+					p.theta += -t; // l + f
+					p.x += v*Math.cos(p.theta);
+					p.y += v*Math.sin(p.theta);
+
+					break;
+				case 6: // s + f
+				p.x += v*Math.cos(p.theta);
+				p.y += v*Math.sin(p.theta);
+				shoot = true;
+				break;
+				case 7: // l + s
+				p.theta += t;
+				shoot = true;
+				break;
+				case 8: // r + s
+				p.theta += -t;
+				shoot = true;
+				break;
+				case 9: // l + f + s
+				p.theta += t;
+				p.x += v*Math.cos(p.theta);
+				p.y += v*Math.sin(p.theta);
+				shoot = true;
+				break;
+				case 10: // r + f + s
+				p.theta += -t;
+				p.x += v*Math.cos(p.theta);
+				p.y += v*Math.sin(p.theta);
+				shoot = true;
+				break;
+				case 11: // do nothing
+				break;
+				default:
+				break;
+			}
+			return [shoot,reward];
+		}
+
+		var ai_1 = new Network([6,15,15,15,12],0.1,0.1);
+		var ai_2 = new Network([6,30,15,12],0.1,0.1);
+
+		var p1 = new Player(0.2);
+		var p2 = new Player(0.1);
+
+		function drawGame() {
+
+			var c = document.getElementById("canvas");
+			var ctx = c.getContext("2d");
+			ctx.clearRect(0, 0, c.width, c.height);
+			ctx.strokeStyle="#FFFFFF";
+
+			chooseAction(ai_1,p1,p2);
+			chooseAction(ai_2,p2,p1);
+
+			p1.x = p1.x < 0 ? 0 : p1.x;
+			p1.x = p1.x > c.width ? c.width : p1.x;
+			p1.y = p1.y < 0 ? 0 : p1.y;
+			p1.y = p1.y > c.height ? c.height : p1.y;
+
+			p2.x = p2.x < 0 ? 0 : p2.x;
+			p2.x = p2.x > c.width ? c.width : p2.x;
+			p2.y = p2.y < 0 ? 0 : p2.y;
+			p2.y = p2.y > c.height ? c.height : p2.y;
+
+			ctx.beginPath();
+			ctx.arc(p1.x,p1.y,10,p1.theta+0.2,p1.theta-0.2);
+			ctx.stroke();
+			ctx.beginPath();
+			ctx.arc(p2.x,p2.y,10,p2.theta+0.2,p2.theta-0.2);
+			ctx.stroke();
+		// recurse
+		requestAnimationFrame(drawGame);
+	}
+
+	drawGame();
+
+	</script>
+
+	</html>
