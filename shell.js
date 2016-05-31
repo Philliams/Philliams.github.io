@@ -13,7 +13,8 @@ var header = [
 " ┴ └─┘\n",
 " ╦╔═╗   ╔═╗╔═╗\n",
 " ║╚═╗───║ ║╚═╗\n",
-"╚╝╚═╝   ╚═╝╚═╝\n"
+"╚╝╚═╝   ╚═╝╚═╝\n",
+"(don't worry it's not malware)"
 ].reverse();
 
 var instruction = [
