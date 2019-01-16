@@ -9,10 +9,6 @@ My main focus has been on Machine Learning as well as Organic Electronics. I've 
 
 In my spare time I like to participate in many exctracurriculars, such as being a member of the University of Ottawa fencing team or competing in Hackathons and Demo competitions.
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
-
 ### Contact me
 
 [pwill044@uottawa.ca](mailto:pwill044@uottawa.ca)
