@@ -1,162 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+layout: default
+---
 
-  <head>
+<div class="posts">
+  {% for post in site.posts %}
+    <article class="post">
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
 
-    <title>Phillip Williams</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Cabin:700' rel='stylesheet' type='text/css'>
-
-    <!-- Custom styles for this template -->
-    <link href="css/grayscale.css" rel="stylesheet">
-
-  </head>
-
-  <body id="page-top">
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-      <div class="container">
-       <!--  <a class="navbar-brand js-scroll-trigger" href="#page-top">Phillip Williams</a> -->
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
-          <i class="fa fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#download">Projects</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
-            </li>
-          </ul>
-        </div>
+      <div class="entry">
+        {{ post.excerpt }}
       </div>
-    </nav>
 
-    <!-- Intro Header -->
-    <header class="masthead">
-      <div class="intro-body" style="padding-top: 300px; !important;">
-          <div class="row">
-            <div class="col-lg-6 mx-auto">
-              <h1 class="brand-heading" style="text-align: center !important;">Phillip Williams</h1>
-<!--               <p class="intro-text">I am a Chemical Engineering and Computer Science student.</p> -->
-            </div>
-            <div class="col-lg-6"></div>
-          </div>
-      </div>
-    </header>
-
-    <!-- About Section -->
-    <section id="about" class="content-section text-center">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <h2>About Me</h2>
-            <p>I am a fourth year student at the University of Ottawa pursuing a double major in Chemical Engineering and Computer Science. I had no idea what I wanted to do as a career, so I though picking two would give me a better chance of finding something that I would like. After completing my first semester and attending the student conference <a href="http://2018.cusec.net">CUSEC</a>, I realized that Computer Science was my passion but that the Chemistry side of my degree was still captivating.</p>
-            <p>My main focus has been on Machine Learning as well as Organic Electronics. I've worked on Computer Vision and Natural Language Processing projects at IBM and Shopify respectively. I've also worked in <a href="http://www.benoitlessard.com">Dr. Benoit Lessard's lab </a> and I am currently working on an Undergraduate Thesis involving computational chemistry.</p>
-            <p>In my spare time I like to participate in many exctracurriculars, such as being a member of the University of Ottawa fencing team or competing in Hackathons and Demo competitions.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Download Section -->
-    <section id="download" class="download-section content-section text-center">
-      <div class="container">
-        <div class="col-lg-8 mx-auto">
-          <h2>My Résumé</h2>
-          <p>You can email me to get a PDF copy of my résumé at the link below.</p>
-          <a href="mailto:pwill044@uottawa.ca" class="btn btn-default btn-lg">Email me at pwill044@uottawa.ca</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="content-section text-center">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <h2>Projects and Publication</h2>
-            <p>Take a look at my github for my project source code
-            <ul class="list-inline banner-social-buttons">
-              <li class="list-inline-item">
-                <a href="https://github.com/Philliams" class="btn btn-default btn-lg">
-                  <i class="fa fa-github fa-fw"></i>
-                  <span class="network-name">Github</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="col-lg-6">
-            <h3>Amadios</h3>
-            <p>
-              Amadios is a neural net based iOS application that can transcribe sheet music in real-time. Using neural networks the app can detect and adapt to various instruments and acoustic environments.
-            </p>
-            <p>
-              <a href="http://amadios.com"> Github link </a>
-            </p>
-          </div>
-          <div class="col-lg-6">
-            <h3>Marlen</h3>
-            <p>
-              Marlen is a python bot using Deep Q-learning in order to learn the optimal way to play Super Smash Bros Melee. It is a modded version of <a href="https://github.com/spxtr">Spxtr's</a> <a href="https://github.com/spxtr/p3">P3</a> bot, making use it's memory management capability.
-            </p>
-            <p>
-              <a href="http://amadios.com"> Github link </a>
-            </p>
-          </div>
-        </div>
-        <div class="col-lg-6 offset-lg-3">
-            <h3>SINN</h3>
-            <p>
-              I invented a novel neural network architecture based off of the principle of Shepard Interpolation that allows layer weights to be deterministically initialized and allowing for intuitive interpretation of the neuron weights and biases.  Published my work in the Springer series "Lecture Notes In Computer Science" and presented at the ISVC 2016 conference.
-            </p>
-            <p>
-              <a href="https://github.com/Philliams/PySINN"> Github link </a> | <a href="https://link.springer.com/chapter/10.1007/978-3-319-50832-0_34"> Paper link </a>
-            </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <div class="container text-center">
-        <p>Copyright &copy; Phillip Williams 2017</p>
-      </div>
-    </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
-
-    <!-- Custom scripts for this template -->
-    <script src="js/grayscale.min.js"></script>
-
-  </body>
-
-</html>
+      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
+    </article>
+  {% endfor %}
+</div>
