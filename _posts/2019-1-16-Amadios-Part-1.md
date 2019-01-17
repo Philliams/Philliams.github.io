@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
 	var x = [];
 
-	for(var i = 0; i < 100; i++){
-		x.push( i / 10);
+	for(var i = 0; i < 40; i++){
+		x.push( i / 4);
 	}
 
 
@@ -62,3 +62,5 @@ document.addEventListener("DOMContentLoaded", function(){
 	
 });
 </script>
+
+In practice, these values are given in an array, with the sampling rate known so you can calculate the time for each position in the array given when the audio recording started.
