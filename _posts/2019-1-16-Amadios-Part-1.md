@@ -8,49 +8,49 @@ A couple years ago, I worked on this really cool project called Amadios (a mashu
 
 First of all, we need to break down what kind of data that we're getting from the microphone, and what type of output that we want to encode the notes being played.
 
-<canvas id="radar-chart" width="600" height="800"></canvas>
+<canvas id="line-chart" width="800" height="450"></canvas>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
-	var data = {
-	    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9 ,10],
-	    datasets: [{
-	        label: "f(x) = sin(x)", // Name it as you want
-	        function: function(x) { return Math.sin(x)},
-	        data: [], // Don't forget to add an empty data array, or else it will break
-	        borderColor: "rgba(75, 192, 192, 1)",
-	        fill: false
-	    },
-	    {
-	        label: "f(x) = sin(x+Π)",
-	        function: function(x) {return Math.sin(x + 3.1415)},
-	        data: [],
-	        borderColor: "rgba(153, 102, 255, 1)",
-	        fill: false
-	    }]
-	}
-
-	Chart.pluginService.register({
-	    beforeInit: function(chart) {
-	        // We get the chart data
-	        var data = chart.config.data;
-
-	        // For every dataset ...
-	        for (var i = 0; i < data.datasets.length; i++) {
-
-	            // For every label ...
-	            for (var j = 0; j < data.labels.length; j++) {
-
-	                // We get the dataset's function and calculate the value
-	                var fct = data.datasets[i].function,
-	                    x = data.labels[j],
-	                    y = fct(x);
-	                // Then we add the value to the dataset data
-	                data.datasets[i].data.push(y);
-	            }
-	        }
-	    }
-	});
+	new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+    datasets: [{ 
+        data: [86,114,106,106,107,111,133,221,783,2478],
+        label: "Africa",
+        borderColor: "#3e95cd",
+        fill: false
+      }, { 
+        data: [282,350,411,502,635,809,947,1402,3700,5267],
+        label: "Asia",
+        borderColor: "#8e5ea2",
+        fill: false
+      }, { 
+        data: [168,170,178,190,203,276,408,547,675,734],
+        label: "Europe",
+        borderColor: "#3cba9f",
+        fill: false
+      }, { 
+        data: [40,20,10,16,24,38,74,167,508,784],
+        label: "Latin America",
+        borderColor: "#e8c3b9",
+        fill: false
+      }, { 
+        data: [6,3,2,2,7,26,82,172,312,433],
+        label: "North America",
+        borderColor: "#c45850",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'World population per region (in millions)'
+    }
+  }
+});
 	
 });
 </script>
