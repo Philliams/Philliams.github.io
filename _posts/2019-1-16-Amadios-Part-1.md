@@ -10,7 +10,7 @@ First of all, we need to break down what kind of data that we're getting from th
 
 Sound is just pressure waves in the air that our ears can capture. Below you can see an animated gif showing how the particles in the air behave to produce the pressure waves that we call sound.
 
-![Sound Wave][/images/pressure_wave.gif]
+<img src="{{ site.baseurl }}/images/pressure_wave.gif" alt="Sound Wave"/>
 Source : [Institute of Sound and Vibration Research - University of SouthHampton](http://resource.isvr.soton.ac.uk/spcg/tutorial/tutorial/Tutorial_files/Web-basics-nature.htm)
 
 For our purposes, we're going to be dealing with a common audio format known as PCM or Pulse Code Modulation. Basically, the audio is sample at regular intervals and then converted into a digital value. The digital values are numerical representations of the original waveforms. The float values is the actual sound or pressure waves measured by the microphone.
@@ -36,6 +36,11 @@ document.addEventListener("DOMContentLoaded", function(){
 	        data: x.map(i => Math.sin(i)),
 	        label: "Sin(x)",
 	        borderColor: "#3e95cd",
+	        fill: false
+	      }, { 
+	        data: x.map(i => Math.sin(i + (3.1415/2))),
+	        label: "Sin(x + pi/2)",
+	        borderColor: "#8e5ea2",
 	        fill: false
 	      }
 	    ]
