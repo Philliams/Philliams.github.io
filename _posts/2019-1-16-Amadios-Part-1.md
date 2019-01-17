@@ -49,15 +49,14 @@ document.addEventListener("DOMContentLoaded", function(){
 		        display: true,
 		        labelString: 'PCM Value'
 		      }
-		    }]
-		  },
+		    }],
 		  xAxes: [{
 		      scaleLabel: {
 		        display: true,
 		        labelString: 'Time (seconds)'
 		      }
 		    }]
-		  }     
+		}     
 	  }
 	});
 	
