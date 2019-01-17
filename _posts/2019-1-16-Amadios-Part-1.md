@@ -16,6 +16,9 @@ $$ r = h = \sqrt{\frac {1} {2}} = \sqrt{\frac {N} {N+1}} \sqrt{\frac {N+1} {2N}}
 <canvas id="radar-chart" width="600" height="800"></canvas>
 <script>
 document.onload = function(){
+
+	console.log("test");
+
     var notations = {
         0:"",
         1:"no",
