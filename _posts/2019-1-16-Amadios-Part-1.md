@@ -14,17 +14,18 @@ document.addEventListener("DOMContentLoaded", function(){
 
 	var x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+
 	new Chart(document.getElementById("line-chart"), {
 	  type: 'line',
 	  data: {
 	    labels: x,
 	    datasets: [{ 
-	        data: [(for i of x) Math.sin(i)],
+	        data: x.map(i => Math.sin(i)),
 	        label: "Sin(x)",
 	        borderColor: "#3e95cd",
 	        fill: false
 	      }, { 
-	        data: [(for i of x) 1.5 * Math.sin(i + (3.1415/2))],
+	        data: x.map(i => 1.5 * Math.sin(i + (3.1415/2))),
 	        label: "1.5 * Sin(x + pi/2)",
 	        borderColor: "#8e5ea2",
 	        fill: false
