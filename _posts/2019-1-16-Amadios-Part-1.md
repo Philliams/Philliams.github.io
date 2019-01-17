@@ -6,114 +6,51 @@ title: Amadios - Part 1
 
 A couple years ago, I worked on this really cool project called Amadios (a mashup of Amadeus Mozzart and iOS) for a demo competition. Basically, I made an iOS app that would take live audio and convert it to sheet music in real time. A lot of my friends and coworkers found this really cool, so I thought I'd make a series of blog posts explaining how this was accomplished.
 
-In N-dimensional simplex noise, the squared kernel summation radius $r^2$ is $\frac 1 2$
-for all values of N. This is because the edge length of the N-simplex $s = \sqrt {\frac {N} {N + 1}}$
-divides out of the N-simplex height $h = s \sqrt {\frac {N + 1} {2N}}$.
-The kerel summation radius $r$ is equal to the N-simplex height $h$.
-
-$$ r = h = \sqrt{\frac {1} {2}} = \sqrt{\frac {N} {N+1}} \sqrt{\frac {N+1} {2N}} $$
+First of all, we need to break down what kind of data that we're getting from the microphone, and what type of output that we want to encode the notes being played.
 
 <canvas id="radar-chart" width="600" height="800"></canvas>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
 
+	var data = {
+	    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9 ,10],
+	    datasets: [{
+	        label: "f(x) = sin(x)", // Name it as you want
+	        function: function(x) { return Math.sin(x)},
+	        data: [], // Don't forget to add an empty data array, or else it will break
+	        borderColor: "rgba(75, 192, 192, 1)",
+	        fill: false
+	    },
+	    {
+	        label: "f(x) = sin(x+Π)",
+	        function: function(x) {return Math.sin(x + 3.1415)},
+	        data: [],
+	        borderColor: "rgba(153, 102, 255, 1)",
+	        fill: false
+	    }]
+	}
 
-	console.log("test");
+	Chart.pluginService.register({
+	    beforeInit: function(chart) {
+	        // We get the chart data
+	        var data = chart.config.data;
 
-    var notations = {
-        0:"",
-        1:"no",
-        20:"Theory",
-        50:"proficient",
-        70:"Great",
-        90:"outstanding",
-            }
+	        // For every dataset ...
+	        for (var i = 0; i < data.datasets.length; i++) {
 
-    new Chart(document.getElementById("radar-chart"), {
-        type: 'radar',
-        
-        data: {
-            labels: ["GNU/Linux", "Android Development", "Core Java", "Frontend HTML/CSS", "UI / UX", "Blogging", "Database", "Javascript", "Windows", "CMS(Wordpress)"],
-            datasets: [{
-                label: "2017",
-                fill: true,
-                backgroundColor: "rgba(51,133,255,0.2)",
-                borderColor: "rgba(51,133,255,1)",
-                pointBorderColor: "#fff",
-                pointBackgroundColor: "rgba(51,133,255,1)",
-                data: [33, 49, 50, 67, 39, 80, 60, 50, 90,80]
-            }, {
-                label: "2018",
-                fill: true,
-                backgroundColor: "rgba(255,99,132,0.2)",
-                borderColor: "rgba(255,99,132,1)",
-                pointBorderColor: "#fff",
-                pointBackgroundColor: "rgba(255,99,132,1)",
-                pointBorderColor: "#fff",
-                data: [60, 67, 80, 68, 50, 90, 80, 60, 90,81]
-            }]
-        },
+	            // For every label ...
+	            for (var j = 0; j < data.labels.length; j++) {
 
-
-        options: {
-            scale: {
-                responsive: true,
-                ticks: {
-                    display: true,
-                    min:0,
-                    beginAtZero: true,
-                    max: 100, 
-                    userCallback: function (value, index, values) {
-                        if( typeof notations[value]!="undefined")
-                        {
-                             return notations[value];
-                         }
-                    else {
-                      return value;
-                           }
-
-                },
-                },
-
-                gridLines: {
-                    display: true,
-                    color: [
-                        "rgba(245, 245,220,1)",
-                        "rgba(0, 0,255,0.1)",
-                        "rgba(165, 42,42,0.1)",
-                        "rgba(0, 255,255,0.1)",
-                        "rgba(0, 0,139,0.3)",
-                        "rgba(0, 139,139,0.1)",
-                        "rgba(169, 169,169,1)",
-                        "rgba(0, 100,0,0.1)",
-                        "rgba(189, 22,107,0.1)",
-                        "rgba(139, 0,139,0.1)",
-                        "rgba(139, 0,139,0.1)",
-                        "rgba(139, 0,139,0.1)",
-
-
-                    ], 
-                },
-
-                angleLines: {
-                    display: true,
-                    color: "red",
-                },
-                pointLabels: {
-                    // callback: function(value, index, values) {
-                    //     return '$' + value;
-                    // }
-                    fontColor: '#' + Math.random().toString(16).slice(2, 8).toUpperCase(),
-                },
-            },
-            legend: {
-                display: true
-            },
-            title: {
-                display: false,
-                // text: 'Skill Set'
-            },
-        }
-    });
+	                // We get the dataset's function and calculate the value
+	                var fct = data.datasets[i].function,
+	                    x = data.labels[j],
+	                    y = fct(x);
+	                // Then we add the value to the dataset data
+	                data.datasets[i].data.push(y);
+	            }
+	        }
+	    }
+	});
+	
 });
 </script>
