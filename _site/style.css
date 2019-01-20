@@ -197,6 +197,7 @@ img {
 /* LAYOUT / SECTIONS */
 /*********************/
 .wrapper-masthead {
+  height: 175px;
   margin-bottom: 50px;
 }
 
