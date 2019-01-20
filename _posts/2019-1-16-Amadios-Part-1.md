@@ -83,6 +83,14 @@ Source : [Wikipedia - Fourier Transform](https://en.wikipedia.org/wiki/Fourier_t
 
 In our example, the red waveform is the raw audio in PCM format, while the blue chart represents the frequencies that make up the original waveform, the X axis is the frequency and the Y axis is the quantity of a given frequency in the original sound. (**Note :** there is a real and imaginary part to the fourier transform that basically represent the magnitude and offset of the different signals)
 
-In practice, we can calculate the fourier transform ourselves with the 
+We are going to use the Discrete Fourier Transform. We are going to calculate the amount of frequency *k* $ (X[k]) $ from the data points $x[n]$. The equation is as follows :
 
-Test
+$$ X[k] = \sum_{n=0}^{N-1} x[n] \left(cos \left( \frac{2 \pi kn}{N} \right) - i \cdot sin \left( \frac{2 \pi kn}{N} \right) \right) $$
+
+Each $ X[k] $ is a complex number representing the magnitude and offset of the given frequency *k* in the original sample. The frequency is k cycles per N samples. The magnitude and phase of the frequency can be computed, but we will only deal with the magnitude, which is calculated using :
+
+$$ Magnitude(X[k]) = \sqrt{Re(X[k])^2 + Im(X[k])^2} $$
+
+**Note** : Re and Im are the Real and Imaginary components of the complex number.
+
+Now we have everything we need to be able to take an input from a microphone and transform it into a set of numerical values that a machine learning model could process.
