@@ -84,3 +84,5 @@ Source : [Wikipedia - Fourier Transform](https://en.wikipedia.org/wiki/Fourier_t
 In our example, the red waveform is the raw audio in PCM format, while the blue chart represents the frequencies that make up the original waveform, the X axis is the frequency and the Y axis is the quantity of a given frequency in the original sound. (**Note :** there is a real and imaginary part to the fourier transform that basically represent the magnitude and offset of the different signals)
 
 In practice, we can calculate the fourier transform ourselves with the 
+
+Test

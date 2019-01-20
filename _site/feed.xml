@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-01-20T13:41:31-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Phillip Williams</title><subtitle>An Hour a Day</subtitle><entry><title type="html">Amadios - Part 1</title><link href="http://localhost:4000/Amadios-Part-1/" rel="alternate" type="text/html" title="Amadios - Part 1" /><published>2019-01-16T00:00:00-05:00</published><updated>2019-01-16T00:00:00-05:00</updated><id>http://localhost:4000/Amadios-Part-1</id><content type="html" xml:base="http://localhost:4000/Amadios-Part-1/">&lt;p&gt;A couple years ago, I worked on this really cool project called Amadios (a mashup of Amadeus Mozzart and iOS) for a demo competition. Basically, I made an iOS app that would take live audio and convert it to sheet music in real time. A lot of my friends and coworkers found this really cool, so I thought I’d make a series of blog posts explaining how this was accomplished.&lt;/p&gt;
+
+&lt;p&gt;First of all, we need to break down what kind of data that we’re getting from the microphone, and what type of output that we want to encode the notes being played.&lt;/p&gt;
+
+&lt;p&gt;Sound is just pressure waves in the air that our ears can capture. Below you can see an animated gif showing how the particles in the air behave to produce the pressure waves that we call sound.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/pressure_wave.gif&quot; alt=&quot;Sound Wave&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Source : &lt;a href=&quot;http://resource.isvr.soton.ac.uk/spcg/tutorial/tutorial/Tutorial_files/Web-basics-nature.htm&quot;&gt;Institute of Sound and Vibration Research - University of SouthHampton&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;For our purposes, we’re going to be dealing with a common audio format known as PCM or Pulse Code Modulation. Basically, the audio is sample at regular intervals and then converted into a digital value. The digital values are numerical representations of the original waveforms. The float values is the actual sound or pressure waves measured by the microphone.&lt;/p&gt;
+
+&lt;p&gt;For example, we can look at a simple sine wave to see what it would look like when sample over 10 seconds. A slightly offset wave is also shown.&lt;/p&gt;
+
+&lt;canvas id=&quot;line-chart&quot; width=&quot;800&quot; height=&quot;450&quot;&gt;&lt;/canvas&gt;
+&lt;script&gt;
+document.addEventListener(&quot;DOMContentLoaded&quot;, function(){
+
+	var x = [];
+
+	for(var i = 0; i &lt; 40; i++){
+		x.push( i / 4);
+	}
+
+
+	new Chart(document.getElementById(&quot;line-chart&quot;), {
+	  type: 'line',
+	  data: {
+	    labels: x,
+	    datasets: [{ 
+	        data: x.map(i =&gt; Math.sin(i)),
+	        label: &quot;Sin(x)&quot;,
+	        borderColor: &quot;#3e95cd&quot;,
+	        fill: false
+	      }, { 
+	        data: x.map(i =&gt; Math.sin(i + (3.1415/2))),
+	        label: &quot;Sin(x + pi/2)&quot;,
+	        borderColor: &quot;#8e5ea2&quot;,
+	        fill: false
+	      }
+	    ]
+	  },
+	  options: {
+	    title: {
+	      display: true,
+	      text: 'Pulse Code Modulation (PCM)'
+	    },
+	    scales: {
+		    yAxes: [{
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'PCM Value'
+		      }
+		    }],
+		  xAxes: [{
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'Time (seconds)'
+		      }
+		    }]
+		}     
+	  }
+	});
+	
+});
+&lt;/script&gt;
+
+&lt;p&gt;In practice, these values are given in an array, with the sampling rate known so you can calculate the time for each position in the array given when the audio recording started. So basically, we’ll be receiving an array of floats representing the amplitudes of the sound for &lt;em&gt;n&lt;/em&gt; timesteps.&lt;/p&gt;
+
+&lt;p&gt;We could feed these values directly into a neural network, but there’s a catch. If we look at the graph above, the exact same frequency can give different values in a sample, depending on when you start recording. For example, if you started recording say a second later or earlier, the sound wave would be exactly the same, but the PCM values in the array would be offset. This would make it very difficult for the machine learning model to process, since the exact same sound can give very different input values.&lt;/p&gt;
+
+&lt;p&gt;Thankfully, there exists a mathmatical tool that we can use to avoid this issue - Fourier Transforms. There are videos and extensive explanations on fourier transforms, so we won’t look too much into it, but the basic idea is that we can take the PCM values for an audio sample, and figure out what frequencies make up that sound.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/fourier_transform.gif&quot; alt=&quot;Fourier Transform&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Source : &lt;a href=&quot;https://en.wikipedia.org/wiki/Fourier_transform&quot;&gt;Wikipedia - Fourier Transform&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;In our example, the red waveform is the raw audio in PCM format, while the blue chart represents the frequencies that make up the original waveform, the X axis is the frequency and the Y axis is the quantity of a given frequency in the original sound. (&lt;strong&gt;Note :&lt;/strong&gt; there is a real and imaginary part to the fourier transform that basically represent the magnitude and offset of the different signals)&lt;/p&gt;
+
+&lt;p&gt;In practice, we can calculate the fourier transform ourselves with the&lt;/p&gt;
+
+&lt;p&gt;Test&lt;/p&gt;</content><author><name></name></author><summary type="html">A couple years ago, I worked on this really cool project called Amadios (a mashup of Amadeus Mozzart and iOS) for a demo competition. Basically, I made an iOS app that would take live audio and convert it to sheet music in real time. A lot of my friends and coworkers found this really cool, so I thought I’d make a series of blog posts explaining how this was accomplished.</summary></entry></feed>
