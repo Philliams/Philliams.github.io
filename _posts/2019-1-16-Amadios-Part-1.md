@@ -47,21 +47,41 @@ document.addEventListener("DOMContentLoaded", function(){
 	    ]
 	  },
 	  options: {
+	  	legend :{
+	  		labels :{
+		  		fontColor : "#839496"
+	  		}
+	  	},
 	    title: {
 	      display: true,
-	      text: 'Pulse Code Modulation (PCM)'
+	      text: 'Pulse Code Modulation (PCM)',
+	      fontColor: "#839496"
 	    },
 	    scales: {
 		    yAxes: [{
+		      gridLines: {
+			    color: "#839496"
+			  },
+		      ticks :{
+		      	fontColor: "#839496"
+		      },
 		      scaleLabel: {
 		        display: true,
-		        labelString: 'PCM Value'
+		        labelString: 'PCM Value',
+		        fontColor: "#839496"
 		      }
 		    }],
 		  xAxes: [{
+		  	  gridLines: {
+			    color: "#839496"
+			  },
+		  	  ticks :{
+		      	fontColor: "#839496"
+		      },
 		      scaleLabel: {
 		        display: true,
-		        labelString: 'Time (seconds)'
+		        labelString: 'Time (seconds)',
+		        fontColor: "#839496"
 		      }
 		    }]
 		}     
@@ -93,4 +113,102 @@ $$ Magnitude(X[k]) = \sqrt{Re(X[k])^2 + Im(X[k])^2} $$
 
 **Note** : Re and Im are the Real and Imaginary components of the complex number.
 
-Now we have everything we need to be able to take an input from a microphone and transform it into a set of numerical values that a machine learning model could process.
+Now we have everything we need to be able to take an input from a microphone and transform it into a set of numerical values that a machine learning model could process. Below is the python 2 program that will take an input from a microphone, read in the PCM values, calculate the Discrete Fourier Transform and then graph the original sound wave and the fourier transform of the sound wave.
+
+{% highlight python %}
+
+# import all the libraries we will need for the audio processing
+import pyaudio
+import math
+import struct
+import matplotlib.pyplot as plt
+
+# define the variables for the audio recording
+CHUNK = 1024 # This is how many PCM values we will retrieve at a time
+FORMAT = pyaudio.paInt16 # This is the numerical format for the PCM values, in this case a 16 bit signed integer
+CHANNELS = 1 # how many channels to record, we only care about one channel for simplicity
+RATE = 44100 # the sampling rate, this is how many PCM values would be recorded in a second
+RECORD_SECONDS = 1 # this is how long our recording will be in seconds
+WAVE_OUTPUT_FILENAME = "output_2.wav"
+
+# define out discrete fourier transform function
+def discrete_fourier_transform(PCM_VALUES):
+
+	# array to keep track of the amplitudes of each frequency component
+	amplitudes = []
+
+	# length of PCM_VALUES array used in for loops, N corresponds to the N in the relevant equations
+	N = len(PCM_VALUES)
+
+	# iterate over each frequency components [0, N-1]
+	for k in range(N):
+
+		# initialize complex number for the specific frequency component
+		complex_num = complex(0)
+
+		# iterate over each data point in PCM_VALUES array
+		for n in range(N):
+
+			# calculate contribution of specific data point to specific frequency component
+			complex_num += PCM_VALUES[n] * (math.cos(2*k*n*math.pi/float(N)) - 1j * math.sin(2*k*n*math.pi/float(N)))
+
+		# calculate amplitude of frequency component
+		amplitude = math.sqrt(complex_num.real**2 + complex_num.imag**2)
+
+		# append magnitude of frequency component to amplitudes array
+		amplitudes.append(amplitude)
+
+	# return result for all frequency components
+	return amplitudes
+
+# initialize/instantiate pyAudio
+p = pyaudio.PyAudio()
+
+# create an audio stream to be able to read the input from the microphone
+stream = p.open(format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=CHUNK)
+
+# have a list to record the PCM values
+PCM_VALUES = []
+
+print("* recording")
+
+# figure out how many chunks we need, given the chunk size, the recording rate and the length of the recording
+for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+
+	# read in the data from the stream, this is a byte string
+	# the length of the byte string is CHUNK * Num. Bytes per values
+	# in our case, the number of bytes per value is 2 bytes per Int16 and CHUNK is 1024
+	# so the length will be 2048
+    data = stream.read(CHUNK)
+
+    # specify the byte string format for the struct library, "h" denotes a signed Int16, then we multiply it by CHUNK so that we know how many Int16's we have
+    byte_format = "h" * CHUNK
+
+    # parse the byte string into a list of values using the struct library and append to the running list of all PCM values in the recording
+    PCM_VALUES += struct.unpack(byte_format, data)
+
+print("* done recording")
+
+# close audio stream and pyaudio
+stream.stop_stream()
+stream.close()
+p.terminate()
+
+# for the sake of the visualization, we're only going to that the first CHUNK of data, in this case 1024 values
+PCM_VALUES = PCM_VALUES[:CHUNK]
+
+# plot the raw audio using matplotlib, y axis is PCM value, x axis is position in PCM array
+plt.plot([i for i in range(len(PCM_VALUES))], PCM_VALUES)
+plt.show()
+
+# compute the fourier transform of our raw audio/PCM values
+amplitudes = discrete_fourier_transform(PCM_VALUES)
+
+# plot the fourier transform
+plt.plot([i for i in range(len(amplitudes))], amplitudes)
+plt.show()
+{% endhighlight %}

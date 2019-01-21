@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <title>Amadios - Part 1</title>
+  <meta name="viewport" content="width=device-width">
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="/assets/css/style.css" rel="stylesheet" />
+  <link href="/assets/css/colors-dark.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+
+
+  <header id="header">
+    <h1><a href="/"><i class="icon-sun"></i> Solar Theme</a></h1>
+    <p>A stylish blog using the Solarized color palette</p>
+  </header>
+
+
+
+  <div id="page">
+
+
+
+    <div id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/publications">Publications</a></li>
+        </ul>
+      </nav>
+    </div>
+
+
+
+    <div id="content">
+      <article class="post">
+
+	
+		<h1><a href="/2019/01/16/Amadios-Part-1/">Amadios - Part 1</a></h1>
+	
+
+	<div class="post-content"><p>A couple years ago, I worked on this really cool project called Amadios (a mashup of Amadeus Mozzart and iOS) for a demo competition. Basically, I made an iOS app that would take live audio and convert it to sheet music in real time. A lot of my friends and coworkers found this really cool, so I thought I’d make a series of blog posts explaining how this was accomplished.</p>
+
+<p>First of all, we need to break down what kind of data that we’re getting from the microphone, and what type of output that we want to encode the notes being played.</p>
+
+<p>Sound is just pressure waves in the air that our ears can capture. Below you can see an animated gif showing how the particles in the air behave to produce the pressure waves that we call sound.</p>
+
+<p><img src="/images/pressure_wave.gif" alt="Sound Wave" /></p>
+
+<p>Source : <a href="http://resource.isvr.soton.ac.uk/spcg/tutorial/tutorial/Tutorial_files/Web-basics-nature.htm">Institute of Sound and Vibration Research - University of SouthHampton</a></p>
+
+<p>For our purposes, we’re going to be dealing with a common audio format known as PCM or Pulse Code Modulation. Basically, the audio is sample at regular intervals and then converted into a digital value. The digital values are numerical representations of the original waveforms. The float values is the actual sound or pressure waves measured by the microphone.</p>
+
+<p>For example, we can look at a simple sine wave to see what it would look like when sample over 10 seconds. A slightly offset wave is also shown.</p>
+
+<canvas id="line-chart" width="800" height="450"></canvas>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+	var x = [];
+
+	for(var i = 0; i < 40; i++){
+		x.push( i / 4);
+	}
+
+
+	new Chart(document.getElementById("line-chart"), {
+	  type: 'line',
+	  data: {
+	    labels: x,
+	    datasets: [{ 
+	        data: x.map(i => Math.sin(i)),
+	        label: "Sin(x)",
+	        borderColor: "#3e95cd",
+	        fill: false
+	      }, { 
+	        data: x.map(i => Math.sin(i + (3.1415/2))),
+	        label: "Sin(x + pi/2)",
+	        borderColor: "#8e5ea2",
+	        fill: false
+	      }
+	    ]
+	  },
+	  options: {
+	  	legend :{
+	  		labels :{
+		  		fontColor : "#839496"
+	  		}
+	  	},
+	    title: {
+	      display: true,
+	      text: 'Pulse Code Modulation (PCM)',
+	      fontColor: "#839496"
+	    },
+	    scales: {
+		    yAxes: [{
+		      gridLines: {
+			    color: "#839496"
+			  },
+		      ticks :{
+		      	fontColor: "#839496"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'PCM Value',
+		        fontColor: "#839496"
+		      }
+		    }],
+		  xAxes: [{
+		  	  gridLines: {
+			    color: "#839496"
+			  },
+		  	  ticks :{
+		      	fontColor: "#839496"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'Time (seconds)',
+		        fontColor: "#839496"
+		      }
+		    }]
+		}     
+	  }
+	});
+	
+});
+</script>
+
+<p>In practice, these values are given in an array, with the sampling rate known so you can calculate the time for each position in the array given when the audio recording started. So basically, we’ll be receiving an array of floats representing the amplitudes of the sound for <em>n</em> timesteps.</p>
+
+<p>We could feed these values directly into a neural network, but there’s a catch. If we look at the graph above, the exact same frequency can give different values in a sample, depending on when you start recording. For example, if you started recording say a second later or earlier, the sound wave would be exactly the same, but the PCM values in the array would be offset. This would make it very difficult for the machine learning model to process, since the exact same sound can give very different input values.</p>
+
+<p>Thankfully, there exists a mathmatical tool that we can use to avoid this issue - Fourier Transforms. There are videos and extensive explanations on fourier transforms, so we won’t look too much into it, but the basic idea is that we can take the PCM values for an audio sample, and figure out what frequencies make up that sound.</p>
+
+<p><img src="/images/fourier_transform.gif" alt="Fourier Transform" /></p>
+
+<p>Source : <a href="https://en.wikipedia.org/wiki/Fourier_transform">Wikipedia - Fourier Transform</a></p>
+
+<p>In our example, the red waveform is the raw audio in PCM format, while the blue chart represents the frequencies that make up the original waveform, the X axis is the frequency and the Y axis is the quantity of a given frequency in the original sound. (<strong>Note :</strong> there is a real and imaginary part to the fourier transform that basically represent the magnitude and offset of the different signals)</p>
+
+<p>We are going to use the Discrete Fourier Transform. We are going to calculate the amount of frequency <em>k</em> $ (X[k]) $ from the data points $x[n]$. The equation is as follows :</p>
+
+<script type="math/tex; mode=display">X[k] = \sum_{n=0}^{N-1} x[n] \left(cos \left( \frac{2 \pi kn}{N} \right) - i \cdot sin \left( \frac{2 \pi kn}{N} \right) \right)</script>
+
+<p>Each $ X[k] $ is a complex number representing the magnitude and offset of the given frequency <em>k</em> in the original sample. The frequency is k cycles per N samples. The magnitude and phase of the frequency can be computed, but we will only deal with the magnitude, which is calculated using :</p>
+
+<script type="math/tex; mode=display">Magnitude(X[k]) = \sqrt{Re(X[k])^2 + Im(X[k])^2}</script>
+
+<p><strong>Note</strong> : Re and Im are the Real and Imaginary components of the complex number.</p>
+
+<p>Now we have everything we need to be able to take an input from a microphone and transform it into a set of numerical values that a machine learning model could process. Below is the python 2 program that will take an input from a microphone, read in the PCM values, calculate the Discrete Fourier Transform and then graph the original sound wave and the fourier transform of the sound wave.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># import all the libraries we will need for the audio processing</span>
+<span class="kn">import</span> <span class="nn">pyaudio</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c"># define the variables for the audio recording</span>
+<span class="n">CHUNK</span> <span class="o">=</span> <span class="mi">1024</span> <span class="c"># This is how many PCM values we will retrieve at a time</span>
+<span class="n">FORMAT</span> <span class="o">=</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">paInt16</span> <span class="c"># This is the numerical format for the PCM values, in this case a 16 bit signed integer</span>
+<span class="n">CHANNELS</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># how many channels to record, we only care about one channel for simplicity</span>
+<span class="n">RATE</span> <span class="o">=</span> <span class="mi">44100</span> <span class="c"># the sampling rate, this is how many PCM values would be recorded in a second</span>
+<span class="n">RECORD_SECONDS</span> <span class="o">=</span> <span class="mi">1</span> <span class="c"># this is how long our recording will be in seconds</span>
+<span class="n">WAVE_OUTPUT_FILENAME</span> <span class="o">=</span> <span class="s">"output_2.wav"</span>
+
+<span class="c"># define out discrete fourier transform function</span>
+<span class="k">def</span> <span class="nf">discrete_fourier_transform</span><span class="p">(</span><span class="n">PCM_VALUES</span><span class="p">):</span>
+
+	<span class="c"># array to keep track of the amplitudes of each frequency component</span>
+	<span class="n">amplitudes</span> <span class="o">=</span> <span class="p">[]</span>
+
+	<span class="c"># length of PCM_VALUES array used in for loops, N corresponds to the N in the relevant equations</span>
+	<span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">PCM_VALUES</span><span class="p">)</span>
+
+	<span class="c"># iterate over each frequency components [0, N-1]</span>
+	<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+
+		<span class="c"># initialize complex number for the specific frequency component</span>
+		<span class="n">complex_num</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+		<span class="c"># iterate over each data point in PCM_VALUES array</span>
+		<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+
+			<span class="c"># calculate contribution of specific data point to specific frequency component</span>
+			<span class="n">complex_num</span> <span class="o">+=</span> <span class="n">PCM_VALUES</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="o">*</span><span class="n">n</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">N</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="o">*</span><span class="n">n</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span>
+
+		<span class="c"># calculate amplitude of frequency component</span>
+		<span class="n">amplitude</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">complex_num</span><span class="o">.</span><span class="n">real</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">complex_num</span><span class="o">.</span><span class="n">imag</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+		<span class="c"># append magnitude of frequency component to amplitudes array</span>
+		<span class="n">amplitudes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">amplitude</span><span class="p">)</span>
+
+	<span class="c"># return result for all frequency components</span>
+	<span class="k">return</span> <span class="n">amplitudes</span>
+
+<span class="c"># initialize/instantiate pyAudio</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">pyaudio</span><span class="o">.</span><span class="n">PyAudio</span><span class="p">()</span>
+
+<span class="c"># create an audio stream to be able to read the input from the microphone</span>
+<span class="n">stream</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="n">FORMAT</span><span class="p">,</span>
+                <span class="n">channels</span><span class="o">=</span><span class="n">CHANNELS</span><span class="p">,</span>
+                <span class="n">rate</span><span class="o">=</span><span class="n">RATE</span><span class="p">,</span>
+                <span class="nb">input</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                <span class="n">frames_per_buffer</span><span class="o">=</span><span class="n">CHUNK</span><span class="p">)</span>
+
+<span class="c"># have a list to record the PCM values</span>
+<span class="n">PCM_VALUES</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"* recording"</span><span class="p">)</span>
+
+<span class="c"># figure out how many chunks we need, given the chunk size, the recording rate and the length of the recording</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">RATE</span> <span class="o">/</span> <span class="n">CHUNK</span> <span class="o">*</span> <span class="n">RECORD_SECONDS</span><span class="p">)):</span>
+
+	<span class="c"># read in the data from the stream, this is a byte string</span>
+	<span class="c"># the length of the byte string is CHUNK * Num. Bytes per values</span>
+	<span class="c"># in our case, the number of bytes per value is 2 bytes per Int16 and CHUNK is 1024</span>
+	<span class="c"># so the length will be 2048</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">CHUNK</span><span class="p">)</span>
+
+    <span class="c"># specify the byte string format for the struct library, "h" denotes a signed Int16, then we multiply it by CHUNK so that we know how many Int16's we have</span>
+    <span class="n">byte_format</span> <span class="o">=</span> <span class="s">"h"</span> <span class="o">*</span> <span class="n">CHUNK</span>
+
+    <span class="c"># parse the byte string into a list of values using the struct library and append to the running list of all PCM values in the recording</span>
+    <span class="n">PCM_VALUES</span> <span class="o">+=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">byte_format</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"* done recording"</span><span class="p">)</span>
+
+<span class="c"># close audio stream and pyaudio</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">stop_stream</span><span class="p">()</span>
+<span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+
+<span class="c"># for the sake of the visualization, we're only going to that the first CHUNK of data, in this case 1024 values</span>
+<span class="n">PCM_VALUES</span> <span class="o">=</span> <span class="n">PCM_VALUES</span><span class="p">[:</span><span class="n">CHUNK</span><span class="p">]</span>
+
+<span class="c"># plot the raw audio using matplotlib, y axis is PCM value, x axis is position in PCM array</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">PCM_VALUES</span><span class="p">))],</span> <span class="n">PCM_VALUES</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c"># compute the fourier transform of our raw audio/PCM values</span>
+<span class="n">amplitudes</span> <span class="o">=</span> <span class="n">discrete_fourier_transform</span><span class="p">(</span><span class="n">PCM_VALUES</span><span class="p">)</span>
+
+<span class="c"># plot the fourier transform</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">amplitudes</span><span class="p">))],</span> <span class="n">amplitudes</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></code></pre></figure>
+</div>
+
+	<p class="meta">Posted on <span class="postdate">Jan 16, 2019</span></p>
+
+	
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+>
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js">
+</script>
+
+
+</article>
+    </div>
+
+
+
+  </div>
+
+
+
+  <footer id="footer">
+    <p class="copyright">Copyright &copy; 2019 Solar Theme. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="http://www.webmaster-source.com">Matt Harzewski</a></p>
+  </footer>
+
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="/assets/js/jquery.mobilemenu.min.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#sidebar nav ul').mobileMenu({'topOptionText': 'Menu', 'prependTo': '#sidebar nav'});
+    });
+  </script>
+
+
+
+</body>
+</html>
