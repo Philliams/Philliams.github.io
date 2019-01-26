@@ -6,6 +6,8 @@ title: Amadios - Part 1
 
 A couple years ago, I worked on this really cool project called Amadios (a mashup of Amadeus Mozzart and iOS) for a demo competition. Basically, I made an iOS app that would take live audio and convert it to sheet music in real time. A lot of my friends and coworkers found this really cool, so I thought I'd make a series of blog posts explaining how this was accomplished.
 
+### What are sound waves?
+
 First of all, we need to break down what kind of data that we're getting from the microphone, and what type of output that we want to encode the notes being played. 
 
 Sound is just pressure waves in the air that our ears can capture. Below you can see an animated gif showing how the particles in the air behave to produce the pressure waves that we call sound.
@@ -90,6 +92,8 @@ document.addEventListener("DOMContentLoaded", function(){
 	
 });
 </script>
+
+### Fourier Transforms
 
 In practice, these values are given in an array, with the sampling rate known so you can calculate the time for each position in the array given when the audio recording started. So basically, we'll be receiving an array of floats representing the amplitudes of the sound for *n* timesteps.
 

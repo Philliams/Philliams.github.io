@@ -1,10 +1,12 @@
 ---
 layout: post
 mathjax: true
-title: Implementing a Logistic Regression
+title: Implementing Logistic Regression
 ---
 
 One of the simplest Machine Learning algorithms is Logistic Regression. At a conceptual level, there's not much more to it than some simple calculus, but this algorithm can still be pretty effective in a lot of situations. In this post, we're going to take a little bit of a look at the math behind Logistic Regression and then implement our own Logistic Regression library in python.
+
+### What is Logistic Regression?
 
 First of all, when we talk about Machine Learning, we are really talking about curve fitting. What this means is that we have some numerical input data as well as the numerical output we want, we'll then use that data to create a mathmatical model that can take in some input data and output the correct values.
 
@@ -45,9 +47,10 @@ document.addEventListener("DOMContentLoaded", function(){
 	  },
 	  options: {
 	  	legend :{
-	  		labels :{
-		  		fontColor : "#839496"
-	  		}
+	  		display: false
+	  	},
+	  	tooltips :{
+	  		enabled: false
 	  	},
 	    title: {
 	      display: true,
@@ -88,6 +91,8 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 
+### Training a Linear Model
+
 So now we have an idea of what our model looks like and how it is defined. The next step is to actually train the model by solving for the $ w $ vector. Assuming we have a dataset of $ x $ vectors (all of the same size) and $ y $ values that we want to predict, we want to find our weight vector $ w $ that will maximize the accuracy of our model and give correct predictions.
 
 The are several algorithms that can do this, each having their own pros and cons, such as [Gradient Descent](https://en.wikipedia.org/wiki/Gradient_descent) or Genetic Algorithms. However, we are going to train our Logistic Regression model using nothing but Linear Regression.
@@ -104,6 +109,8 @@ When solving for $ B $, $ X $ is a 2D matrix, each row corresponds to a single i
 
 This should seem very similar, since it is exactly the same equation for $ z $ in the Logistic Regression model, the only difference is that we pass the sum through a non-linear transformation in Logistic Regression.
 
+### Bridging Linear and Logistic Regression
+
 This is where we can use a clever trick to transform the Logistic Regression problem into a Linear Regression problem. By applying the following function to the true/false (1/0) values of the classification, we can get equivalent values to train a Linear Regression model :
 
 $$ z = ln( \frac{y}{1-y}) $$
@@ -111,6 +118,8 @@ $$ z = ln( \frac{y}{1-y}) $$
 However, if we plug in the values of 0 and 1, we will get a domain error since we can't divide by 0 or calculate the log of 0. To solve this, we can simply use values arbitrarily close to 0 and 1 for our classification output, for example 0.001 and 0.999. This technique is called Label Smoothing. 
 
 So now, to train our Logistic Regression model, we take the classification output of 1 or 0, add some small constant to avoid numerical errors, train a Linear Regression model on the transformed data, then use the Linear Model and the Logistic function to make predictions on new data.
+
+### Recap of the algorithm
 
 Here is a recap of the algorithm to implement Logistic Regression, assuming you have a collection of numerical input vectors and the desired true/false output label:
 1. Use label smoothing to convert each 0/1 label into 0.001/0.999 to avoid numerical issues.
@@ -123,7 +132,7 @@ Here is a recap of the algorithm to implement Logistic Regression, assuming you 
 	* $$ y(z) = \frac{1}{1+e^{-z}} $$
 
 
-Now that all the of the theoretical equations have been established, we can actually implement our model and test it on some real world data. For this example, we will be using the [UCI ML Breast Cancer Wisconsin (Diagnostic) dataset](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)). You can download a copy of the dataset directly, or you can import it through the [Scikit learn dataset module](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html).
+Now that all the of the theoretical equations have been established, we can actually implement our model and test it on some real world data. For this example, we will be using the [UCI ML Breast Cancer Wisconsin (Diagnostic) dataset](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)). You can download a copy of the dataset directly, or you can import it through the [Scikit learn dataset module](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html). We are trying to predict if a tumor is bening or malignant with several features such as the radius, symmetry, smoothness and texture.
 
 {% highlight python %}
 from sklearn.datasets import load_breast_cancer
@@ -172,6 +181,19 @@ class LogisticRegression():
 			Y[i] = self.inverse_logistic_function(Y[i])
 		return Y
 
+	# use the weights and a new vector to make a prediction
+	def predict_on_vector(self, x):
+
+		# calculate the weighted sum
+		z = numpy.matmul(numpy.transpose(x), self.weights)
+
+		prediction = self.logistic_function(z)
+
+		if prediction >= self.cutoff:
+			return 1
+		else:
+			return 0
+
 	def predict(self, X):
 
 		# using a bias will add a feature to each vector that is set to 1
@@ -181,21 +203,11 @@ class LogisticRegression():
 			ones = numpy.array([[1.0] for i in range(len(X))])
 			X = numpy.append(ones, X, axis=1)
 
+		# calculate the prediction for each vector
 		predictions = []
 		for i in range(len(X)):
 
-			z = 0
-
-			for j in range(len(X[i])):
-				z += X[i][j] * self.weights[j]
-
-			prediction = self.logistic_function(z)
-
-			if prediction >= self.cutoff:
-				prediction = 1
-			else:
-				prediction = 0
-
+			prediction = self.predict_on_vector(X[i])
 			predictions += [prediction]
 
 		return numpy.array(predictions)
