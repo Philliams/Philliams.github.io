@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <title>A Primer On Computational Geometry</title>
+  <meta name="viewport" content="width=device-width">
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="/assets/css/style.css" rel="stylesheet" />
+  <link href="/assets/css/colors-dark.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+
+
+  <header id="header">
+    <h1><img src="/images/icons8-plus-1-hour-100.png" height="40px" width="40px" style="vertical-align: middle;"> Phillip Williams</h1>
+    <p>An Hour a Day</p>
+  </header>
+
+
+
+  <div id="page">
+
+
+
+    <div id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/publications">Publications</a></li>
+        </ul>
+      </nav>
+    </div>
+
+
+
+    <div id="content">
+      <article class="post">
+
+	
+		<h1><a href="/2019/03/15/A-Primer-On-Computational-Geometry/">A Primer On Computational Geometry</a></h1>
+	
+
+	<div class="post-content"><p>There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post however is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.</p>
+
+<h3 id="introduction-to-vectors">Introduction to Vectors</h3>
+
+<p>A vector is a construct that denotes a quantity and a direction in <em>N</em> dimensions:</p>
+
+<script type="math/tex; mode=display">\vec{x} = \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    ... \\
+    x_n
+\end{bmatrix}</script>
+
+<p>The magnitude or length of a vector is denoted $ \lvert \vec{x} \rvert $ and calculated as :</p>
+
+<script type="math/tex; mode=display">\lvert \vec{x} \rvert = \sqrt{\sum_{i=1}^N x_i^2}</script>
+
+<p>Two vectors can be added together as follows :</p>
+
+<script type="math/tex; mode=display">\vec{x} + \vec{y} = \begin{bmatrix}
+    x_1 + y_1 \\
+    x_2 + y_2 \\
+    ... \\
+    x_n + y_n
+\end{bmatrix}</script>
+
+<p>The dot product of two vectors is as follows :</p>
+
+<script type="math/tex; mode=display">\vec{x} \cdot \vec{y} = \sum_{i=1}^N x_i \cdot y_i</script>
+
+<p>The angle between two vectors can then be computed using the dot product :</p>
+
+<script type="math/tex; mode=display">cos(\theta) = \vec{a} \cdot \vec{b}</script>
+
+<p>The last operation that will be relevant is scalar projection. Scalar projection is a little strange, but you can imagine that the projection of a vector $ \vec{a} $ on another vector $ \vec{b} $ is the magnitude of the vector $ \vec{a} $ in the direction defined by $ \vec{b} $.</p>
+
+<p><img src="/images/vector_projection_white.png" width="500px" height="300px" /></p>
+
+<p>Source : <a href="https://en.wikipedia.org/wiki/Vector_projection">Wikipedia, Vector Projection</a></p>
+
+<p>The Scalar Projection is computed as :</p>
+
+<script type="math/tex; mode=display">\vec{a_b} = \frac{\vec{a} \cdot \vec{b}}{\lvert \vec{b} \rvert}</script>
+
+<h3 id="introduction-to-matrices">Introduction to Matrices</h3>
+
+<p>Matrices are basically a 2D variant of Vectors in that they have both columns and rows :</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+M_{m \times n} = \begin{bmatrix}
+    a_{1,1} & a_{1,2} & \cdots & a_{1,m} \\
+    a_{2,1} & a_{2,2} & \cdots & a_{2,m} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{n,1} & a_{n,2} & \cdots & a_{n,m}
+    \end{bmatrix} %]]></script>
+
+<p>There aren’t many operations on matrices that will be directly relevant to this primer, but the notation is good to know. For my operations on matrices check out the <a href="https://en.wikipedia.org/wiki/Determinant">Determinant</a> and <a href="https://en.wikipedia.org/wiki/Matrix_multiplication">Multiplaction</a> operations.</p>
+</div>
+
+	<p class="meta">Posted on <span class="postdate">Mar 15, 2019</span></p>
+
+	
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script
+  type="text/javascript"
+  charset="utf-8"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+>
+</script>
+
+<script src="/scripts/chart.js">
+</script>
+
+
+</article>
+    </div>
+
+
+
+  </div>
+
+
+
+  <footer id="footer">
+    <p class="copyright">Copyright &copy; 2019 Phillip Williams. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="http://www.webmaster-source.com">Matt Harzewski</a></p>
+  </footer>
+
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="/assets/js/jquery.mobilemenu.min.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#sidebar nav ul').mobileMenu({'topOptionText': 'Menu', 'prependTo': '#sidebar nav'});
+    });
+  </script>
+
+
+
+</body>
+</html>
