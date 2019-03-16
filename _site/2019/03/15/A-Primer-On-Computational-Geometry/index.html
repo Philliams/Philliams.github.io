@@ -50,7 +50,7 @@
 		<h1><a href="/2019/03/15/A-Primer-On-Computational-Geometry/">A Primer On Computational Geometry</a></h1>
 	
 
-	<div class="post-content"><p>There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post however is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.</p>
+	<div class="post-content"><p>There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.</p>
 
 <h3 id="introduction-to-vectors">Introduction to Vectors</h3>
 
@@ -72,7 +72,7 @@
 <script type="math/tex; mode=display">\vec{x} + \vec{y} = \begin{bmatrix}
     x_1 + y_1 \\
     x_2 + y_2 \\
-    ... \\
+    \vdots \\
     x_n + y_n
 \end{bmatrix}</script>
 
@@ -80,9 +80,9 @@
 
 <script type="math/tex; mode=display">\vec{x} \cdot \vec{y} = \sum_{i=1}^N x_i \cdot y_i</script>
 
-<p>The angle between two vectors can then be computed using the dot product :</p>
+<p>The angle between two vectors $ \vec{a} $ and $ \vec{b} $ can then be computed using the dot product :</p>
 
-<script type="math/tex; mode=display">cos(\theta) = \vec{a} \cdot \vec{b}</script>
+<script type="math/tex; mode=display">cos(\theta) = \frac{\vec{a} \cdot \vec{b}}{\lvert \vec{a} \rvert \cdot \lvert \vec{b} \rvert}</script>
 
 <p>The last operation that will be relevant is scalar projection. Scalar projection is a little strange, but you can imagine that the projection of a vector $ \vec{a} $ on another vector $ \vec{b} $ is the magnitude of the vector $ \vec{a} $ in the direction defined by $ \vec{b} $.</p>
 
@@ -107,6 +107,44 @@ M_{m \times n} = \begin{bmatrix}
     \end{bmatrix} %]]></script>
 
 <p>There aren’t many operations on matrices that will be directly relevant to this primer, but the notation is good to know. For my operations on matrices check out the <a href="https://en.wikipedia.org/wiki/Determinant">Determinant</a> and <a href="https://en.wikipedia.org/wiki/Matrix_multiplication">Multiplaction</a> operations.</p>
+
+<h3 id="area-of-a-triangle">Area of a triangle</h3>
+
+<p>There is an algorithm for computing the area of a triangle given only the coordinates of the vertices. This algorithm is known as <a href="https://en.wikipedia.org/wiki/Heron%27s_formula">Heron’s Formula</a>. Given the three points $ \vec{a} $, $ \vec{b} $, and $ \vec{c} $, we can compute the area by first computing the side lengths $A$,$B$ and $C$</p>
+
+<p><script type="math/tex">A = \lvert \vec{a} - \vec{b} \rvert</script>
+<script type="math/tex">B = \lvert \vec{a} - \vec{c} \rvert</script>
+<script type="math/tex">C = \lvert \vec{b} - \vec{c} \rvert</script></p>
+
+<p>Then the area is calculated by :</p>
+
+<p><script type="math/tex">S = \frac{A + B + C}{2}</script>
+<script type="math/tex">Area = \sqrt{S(S-A)(S-B)(S-C)}</script></p>
+
+<h3 id="convex-hull-algorithm-in-2d">Convex Hull Algorithm in 2D</h3>
+
+<p>Given a set of random points, there is something defined as the <a href="https://en.wikipedia.org/wiki/Convex_hull">Convex Hull</a>. The convex hull is a polygon that encapsulates all the points given and does not have any edges that face inwards (i.e. concave). The <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm">Gift Wrapping Algorithm</a> to compute the convex hull is fairly simple :</p>
+<ol>
+  <li>Take the leftmost point of the point cloud (called $ l $) and create a new artificial with the same y position as $ l_1 $ but slightly more to the left. This new point will be denoted $ l_2 $.</li>
+  <li>Next iterate over all the points in the point cloud and for each point (denoted $ l_3 $), create two vectors
+<script type="math/tex">\vec{a} = \begin{bmatrix}
+ l_{2}.x - l_{1}.x \\
+ l_{2}.y - l_{1}.y
+ \end{bmatrix}</script>
+and
+<script type="math/tex">\vec{b} = \begin{bmatrix}
+ l_{3}.x - l_{2}.x \\
+ l_{3}.y - l_{2}.y
+ \end{bmatrix}</script></li>
+  <li>Choose the point $ l_3 $ which produces the smalles clockwise angle from $ \vec{a} $ to $ \vec{b} $.</li>
+  <li>Update $ l_1 $ to be the value of $ l_2 $ and $ l_2 $ to the value of $ l_3 $.</li>
+  <li>repeat steps 2 to 4 until the $ l_3 $ chosen is the same as the starting point.</li>
+</ol>
+
+<p><img src="/images/gift_wrapping_algo_white.png" width="500px" height="300px" />
+Source : <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm">Wikipedia, Gift Wrapping Algorithm</a></p>
+
+<h3 id="minimum-bounding-rectangle">Minimum Bounding Rectangle</h3>
 </div>
 
 	<p class="meta">Posted on <span class="postdate">Mar 15, 2019</span></p>

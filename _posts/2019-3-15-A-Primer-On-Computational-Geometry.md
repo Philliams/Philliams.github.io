@@ -4,7 +4,7 @@ mathjax: true
 title: A Primer On Computational Geometry
 ---
 
-There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post however is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.
+There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.
 
 ### Introduction to Vectors
 
@@ -36,7 +36,7 @@ $$
 \vec{x} + \vec{y} = \begin{bmatrix}
     x_1 + y_1 \\
     x_2 + y_2 \\
-    ... \\
+    \vdots \\
     x_n + y_n
 \end{bmatrix}
 
@@ -50,11 +50,11 @@ $$
 
 $$
 
-The angle between two vectors can then be computed using the dot product :
+The angle between two vectors $ \vec{a} $ and $ \vec{b} $ can then be computed using the dot product :
 
 $$
 
-cos(\theta) = \vec{a} \cdot \vec{b}
+cos(\theta) = \frac{\vec{a} \cdot \vec{b}}{\lvert \vec{a} \rvert \cdot \lvert \vec{b} \rvert}
 
 $$
 
@@ -86,3 +86,39 @@ $$
 $$
 
 There aren't many operations on matrices that will be directly relevant to this primer, but the notation is good to know. For my operations on matrices check out the [Determinant](https://en.wikipedia.org/wiki/Determinant) and [Multiplaction](https://en.wikipedia.org/wiki/Matrix_multiplication) operations.
+
+### Area of a triangle
+
+There is an algorithm for computing the area of a triangle given only the coordinates of the vertices. This algorithm is known as [Heron's Formula](https://en.wikipedia.org/wiki/Heron%27s_formula). Given the three points $ \vec{a} $, $ \vec{b} $, and $ \vec{c} $, we can compute the area by first computing the side lengths $A$,$B$ and $C$
+
+$$ A = \lvert \vec{a} - \vec{b} \rvert $$
+$$ B = \lvert \vec{a} - \vec{c} \rvert $$
+$$ C = \lvert \vec{b} - \vec{c} \rvert $$
+
+Then the area is calculated by :
+
+$$ S = \frac{A + B + C}{2} $$
+$$ Area = \sqrt{S(S-A)(S-B)(S-C)} $$
+
+### Convex Hull Algorithm in 2D
+
+Given a set of random points, there is something defined as the [Convex Hull](https://en.wikipedia.org/wiki/Convex_hull). The convex hull is a polygon that encapsulates all the points given and does not have any edges that face inwards (i.e. concave). The [Gift Wrapping Algorithm](https://en.wikipedia.org/wiki/Gift_wrapping_algorithm) to compute the convex hull is fairly simple :
+1. Take the leftmost point of the point cloud (called $ l $) and create a new artificial with the same y position as $ l_1 $ but slightly more to the left. This new point will be denoted $ l_2 $.
+2. Next iterate over all the points in the point cloud and for each point (denoted $ l_3 $), create two vectors
+$$ \vec{a} = \begin{bmatrix}
+    l_{2}.x - l_{1}.x \\
+    l_{2}.y - l_{1}.y
+    \end{bmatrix} $$
+and
+$$ \vec{b} = \begin{bmatrix}
+    l_{3}.x - l_{2}.x \\
+    l_{3}.y - l_{2}.y
+    \end{bmatrix} $$
+3. Choose the point $ l_3 $ which produces the smalles clockwise angle from $ \vec{a} $ to $ \vec{b} $.
+4. Update $ l_1 $ to be the value of $ l_2 $ and $ l_2 $ to the value of $ l_3 $.
+5. repeat steps 2 to 4 until the $ l_3 $ chosen is the same as the starting point.
+
+<img src="{{ site.baseurl }}/images/gift_wrapping_algo_white.png" width="500px" height="300px">
+Source : [Wikipedia, Gift Wrapping Algorithm](https://en.wikipedia.org/wiki/Gift_wrapping_algorithm)
+
+### Minimum Bounding Rectangle
