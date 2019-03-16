@@ -125,26 +125,68 @@ M_{m \times n} = \begin{bmatrix}
 
 <p>Given a set of random points, there is something defined as the <a href="https://en.wikipedia.org/wiki/Convex_hull">Convex Hull</a>. The convex hull is a polygon that encapsulates all the points given and does not have any edges that face inwards (i.e. concave). The <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm">Gift Wrapping Algorithm</a> to compute the convex hull is fairly simple :</p>
 <ol>
-  <li>Take the leftmost point of the point cloud (called $ l $) and create a new artificial with the same y position as $ l_1 $ but slightly more to the left. This new point will be denoted $ l_2 $.</li>
-  <li>Next iterate over all the points in the point cloud and for each point (denoted $ l_3 $), create two vectors
+  <li>Take the leftmost point of the point cloud (the point is called $ p_1 $) and create a new artificial point with the same y position as $ p_1 $ but slightly more to the left. This new point will be denoted $ p_0 $. We will discard this point after the first iteration.</li>
+  <li>Next iterate over all the points in the point cloud and for each point (denoted $ p_2 $), create two vectors
 <script type="math/tex">\vec{a} = \begin{bmatrix}
- l_{2}.x - l_{1}.x \\
- l_{2}.y - l_{1}.y
+ p_{1}.x - p_{0}.x \\
+ p_{1}.y - p_{0}.y
  \end{bmatrix}</script>
 and
 <script type="math/tex">\vec{b} = \begin{bmatrix}
- l_{3}.x - l_{2}.x \\
- l_{3}.y - l_{2}.y
+ p_{2}.x - p_{1}.x \\
+ p_{2}.y - p_{1}.y
  \end{bmatrix}</script></li>
-  <li>Choose the point $ l_3 $ which produces the smalles clockwise angle from $ \vec{a} $ to $ \vec{b} $.</li>
-  <li>Update $ l_1 $ to be the value of $ l_2 $ and $ l_2 $ to the value of $ l_3 $.</li>
-  <li>repeat steps 2 to 4 until the $ l_3 $ chosen is the same as the starting point.</li>
+  <li>Choose the point $ p_3 $ which produces the smalles clockwise angle from $ \vec{a} $ to $ \vec{b} $.</li>
+  <li>Update $ p_0 $ to be the value of $ p_1 $ and $ p_1 $ to the value of $ p_2 $.</li>
+  <li>repeat steps 2 to 4 until the $ p_2 $ chosen is the same as the starting point.</li>
 </ol>
 
 <p><img src="/images/gift_wrapping_algo_white.png" width="500px" height="300px" />
 Source : <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm">Wikipedia, Gift Wrapping Algorithm</a></p>
 
-<h3 id="minimum-bounding-rectangle">Minimum Bounding Rectangle</h3>
+<h3 id="calculating-the-centroid-of-convex-polygon">Calculating the Centroid of Convex Polygon</h3>
+
+<p>Given a convex polygon, we sometimes need to compute the centroid (or center of mass) of the polygon. While simply computing the average coordinates of all the vertices is easy, it does not actually give the center of mass as properly defined. The following algorithm can be implemented to calculate the centroid of any CONVEX polygon :</p>
+
+<ol>
+  <li>Compute the average x and y coordinates of all the vertices. We will use this centerpoint as the origin.</li>
+  <li>Next, calculate the angle of each vertex relative to the origin and order all the vertices by increasing angle, this will allow any two consecutive points in our vertex array to form a triangle with the center point.</li>
+  <li>The centroid of a triangle is actually computed by the coordinates of the 3 vertices.</li>
+  <li>The centroid of the polygon is then calculated by the average of the triangle centroids, weighted by the area of the triangle.</li>
+</ol>
+
+<p>In the following section, relevant equations are defined. Let us have <em>N</em> points, with triangles formed by points <em>a</em>, <em>b</em> and <em>c</em>, each with <em>x</em> and <em>y</em> coordinates. <em>V</em> is the current vertex being examined in the relevant algorithm step.</p>
+
+<script type="math/tex; mode=display">center point = \begin{bmatrix}
+    \frac{\sum_{i=1}^N x_i}{N} \\
+    \frac{\sum_{i=1}^N y_i}{N}
+    \end{bmatrix}</script>
+
+<script type="math/tex; mode=display">angle = tan^{-1} \left( \frac{V.y - center point.y}{V.x - center point.x} \right)</script>
+
+<script type="math/tex; mode=display">triangle \, centroid = \begin{bmatrix}
+    \frac{a.x + b.x + c.x}{3} \\
+    \frac{a.x + b.x + c.x}{3}
+    \end{bmatrix}</script>
+
+<script type="math/tex; mode=display">polygon \, centroid = \frac{\sum_{i=1}^N \overrightarrow{centroid_i} \cdot area_i}{\sum_{i=1}^N area_i}</script>
+
+<h3 id="minimum-bounding-rectangle-algorithm-in-2d">Minimum Bounding Rectangle Algorithm in 2D</h3>
+
+<p>Assuming we have a convex hull of some set of points, we often can’t use this convex hull directly. A common procedure is then to calculate the minimum bounding rectangle of the given convex polygon. The algorithm for this is somewhat straightforward :</p>
+
+<ol>
+  <li>calculate the centerpoint of the polygon by the average of the x, y coordinates of the vertices</li>
+  <li>order all of the vertices clockwise around the centerpoint.</li>
+  <li>Iterate over each pair of adjacent points on the polygon $ \vec{a} $ and $ \vec{b} $</li>
+  <li>For each pair of points, calculate the vector $ \vec{u} = \vec{a} - \vec{b} $ as well as the perpendicular vector <script type="math/tex">\vec{v} = \begin{bmatrix}
+ u.y \\
+ -u.x
+ \end{bmatrix}</script></li>
+  <li>Iterate over all the points in the polygon and calculate the projection of each point onto $ \vec{u} $ and $ \vec{v} $. This will give you the distance of that point along and perpendicular to the given edge. By taking the maximum and minimum projections, you can identify the bounding rectangle given the reference edge. the rectangle is defined by the two orientation vectors $ \vec{u} $ and $ \vec{v} $ as well as their extents along the respective axis.</li>
+  <li>Iterate over all the edges and select the resulting rectangle with the smallest area.</li>
+</ol>
+
 </div>
 
 	<p class="meta">Posted on <span class="postdate">Mar 15, 2019</span></p>
