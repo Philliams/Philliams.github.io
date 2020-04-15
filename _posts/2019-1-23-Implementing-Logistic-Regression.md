@@ -4,6 +4,7 @@ mathjax: true
 title: Implementing Logistic Regression
 tags: [Machine Learning]
 categories: [Guides]
+fullview: false
 ---
 
 One of the simplest Machine Learning algorithms is Logistic Regression. At a conceptual level, there's not much more to it than some simple calculus, but this algorithm can still be pretty effective in a lot of situations. In this post, we're going to take a little bit of a look at the math behind Logistic Regression and then implement our own Logistic Regression library in python.

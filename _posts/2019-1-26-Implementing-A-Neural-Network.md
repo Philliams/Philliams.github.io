@@ -4,6 +4,7 @@ mathjax: true
 title: Implementing a Neural Network
 tags: [Machine Learning]
 categories: [Guides]
+fullview: false
 ---
 
 One of the more interesting Machine Learning models is the Neural Network. A Neural Network is a highly non-linear mathmatical model that can be fitted to very complicated datasets, from image classification to text translation. In this blog post, we'll be implementing our own simple Neural Network library in python, then test how our model performs through a practical example on an image classification dataset.
