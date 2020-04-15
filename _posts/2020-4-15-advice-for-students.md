@@ -9,7 +9,7 @@ fullview: false
 
 I've gotten a lot of questions on how to get a job as a student. Often students want to buff up their resumes or skills a few weeks before their interviews. Honestly, I don't think there's much you can do in less than a few months to improve your chances. Obviously you can review algorithms, practice questions and buff up you knowledge to give you a slight advantage, but if you really want to level up and give yourself the best chance at landing the type of jobs you want, you need to start at least 6 months in advance.
 
-## How to be a good candidate (6 months to 1 year before you want a job)
+### How to be a good candidate (6 months to 1 year before you want a job)
 
 Before you ever apply to a job, there is a lot that you can do to improve your quality as a candidate and pick up qualifications that will make getting interviews and job offers much easier. These are things that you would do well before applying to a job to set yourself up to be in a good position when you start looking for a job.
 
@@ -30,7 +30,7 @@ My recommendation would be to participate in one of each, for a few reasons. You
 Also look up the various student organizations and meetups on campus, for example the CS club at uottawa.
 
 
-## Finding Companies to apply to (6 months before you want a job)
+### Finding Companies to apply to (6 months before you want a job)
 The first step is to find companies that are hiring and that you would like to work for. There are a couple ways that you can find out about this:
 
 #### Conferences / Hackathons
@@ -57,7 +57,7 @@ Links
 - [Reddit/r/CSCareerQuestions](https://www.reddit.com/r/cscareerquestions/) , [Reddit/r/CSMajors](https://www.reddit.com/r/csMajors/)
 - [CUSEC](https://2020.cusec.net/#/)
 
-## Applying for jobs (3 to 6 months before you want a job)
+### Applying for jobs (3 to 6 months before you want a job)
 Once you've found the companies you want to apply to, there are a few steps before applying:
 1. What job(s) to apply to
 2. Writing your resume
@@ -79,7 +79,7 @@ The most important part of your application is your resume as such you should pu
 #### Cover Letters
 Many jobs require that you submit a cover letter. The issue is that many of the hiring managers/recruiters don't read the cover letter while some do. My advice would be to write a 0.5-1 page letter describing why you want to work there and why you think you would be a good fit (experience, personality, etc.) but if it comes down to it, put more effort into polishing your resume. There are a lot of example cover letters online so use them for inspiration, but make sure that you customize it and make it unique for the jobs that you are applying for.
 
-## In the interview
+### In the interview
 I would say that there are two main types of interviews. There are interviews that are centered around typical interview questions and data structures and there are interviews around your previous experience/projects.
 
 #### Algorithms interview
@@ -88,7 +88,7 @@ These interviews focus around asking you a few theoretical questions around algo
 #### Project/Behavioral interview
 These interviews focus on how you think and your work experience. These interviews are a lot easier in some ways, since there is no right or wrong answer, but at the same time you need to make sure to talk about impressive things that you've done so that you can demonstrate knowledge. A common thing is to go over your projects and talk about it. This is a good time to bring up any interesting or challenging problems that you faced and how you overcame them. Don't over exaggerate, but you can definitely sell yourself at this point by bringing up all the tricky or interesting things that you did/learned/worked on. This is why doing side projects and competitions is good for this type of interview, since you will have a larger bank of technical topics to discuss.
 
-## After The Offer
+### After The Offer
 After you get a job offer, there are a few things you can do, if you don't like the offer you can try to negotiate, you can also ask for time to make a decision if you are waiting on other offers, or you can accept the offer right away. When trying to decide between offers, there are three main things that I look for:
 1. Quality of Life
 2. Role
