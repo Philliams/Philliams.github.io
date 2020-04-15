@@ -1,138 +1,321 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8">
+	<title>An Hour A Day</title>
+	
+	<meta name="author" content="Phillip Williams">
 
-  <meta charset="UTF-8">
-  <title>An Hour a Day</title>
-  <meta name="viewport" content="width=device-width">
+	<!-- Enable responsive viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 
-  <link href="/assets/css/style.css" rel="stylesheet" />
-  <link href="/assets/css/colors-dark.css" rel="stylesheet" />
+	<!-- Le styles -->
+	<link href="/assets/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/assets/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/assets/resources/syntax/syntax.css" rel="stylesheet">
+	<link href="/assets/css/style.css" rel="stylesheet">
 
+	<!-- Le fav and touch icons -->
+	<!-- Update these with your own images
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+	-->
+
+	<link rel="alternate" type="application/rss+xml" title="" href="/feed.xml">
 </head>
 
 <body>
+	<nav class="navbar navbar-default visible-xs" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+			<a type="button" class="navbar-toggle nav-link" href="http://github.com/Philliams">
+				<i class="fa fa-github"></i>
+			</a>
+			
+			
+			
+			<a class="navbar-brand" href="/">
+				<img src="/images/profile.jfif" class="img-circle" />
+				An Hour A Day
+			</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/">Home</a></li>
+				<li><a href="/publications.html"><i class="fa fa-book"></i>Publications</a></li>
+				<li><a href="/about.html"><i class="fa fa-user"></i>About</a></li>
+				<li><a href="/categories.html">Categories</a></li>
+				<li><a href="/tags.html">Tags</a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</nav>
+
+	<!-- nav-menu-dropdown -->
+	<div class="btn-group hidden-xs" id="nav-menu">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-bars"></i>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+			<li><a href="/publications.html"><i class="fa fa-book"></i>Publications</a></li>
+			<li><a href="/about.html"><i class="fa fa-user"></i>About</a></li>
+			<li><a href="/categories.html"><i class="fa fa-folder"></i>Categories</a></li>
+			<li><a href="/tags.html"><i class="fa fa-tags"></i>Tags</a></li>
+			<li class="divider"></li>
+			<li><a href="#"><i class="fa fa-arrow-up"></i>Top of Page</a></li>
+		</ul>
+	</div>
+
+	<div class="col-sm-3 sidebar hidden-xs" style="">
+		<!-- sidebar.html -->
+<header class="sidebar-header" role="banner">
+	<a href="/">
+		<img src="/images/profile.jfif" class="img-circle" />
+	</a>
+	<h3 class="title">
+        <a href="/">An Hour A Day</a>
+    </h3>
+</header>
 
 
-
-  <header id="header">
-    <h1><img src="/images/icons8-plus-1-hour-100.png" height="40px" width="40px" style="vertical-align: middle;"> Phillip Williams</h1>
-    <p>An Hour a Day</p>
-  </header>
-
-
-
-  <div id="page">
-
-
-
-    <div id="sidebar">
-      <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/projects">Projects</a></li>
-          <li><a href="/publications">Publications</a></li>
-        </ul>
-      </nav>
-    </div>
-
-
-
-    <div id="content">
-      
-
-	<article class="post">
-
-		
-			<h1><a href="/2019/03/15/A-Primer-On-Computational-Geometry/">A Primer On Computational Geometry</a></h1>
-		
-
-		<div class="post-content"><p>There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.</p>
-
+<div id="bio" class="text-center">
+	A tech blog
 </div>
-		<h3><a href="/2019/03/15/A-Primer-On-Computational-Geometry/">Read more</a></h3>
-
-	</article>
 
 
-
-	<article class="post">
-
+<div id="contact-list" class="text-center">
+	<ul class="list-unstyled list-inline">
 		
-			<h1><a href="/2019/01/26/Implementing-A-Neural-Network/">Implementing a Neural Network</a></h1>
+		<li>
+			<a class="btn btn-default btn-sm" href="https://github.com/Philliams">
+				<i class="fa fa-github-alt fa-lg"></i>
+			</a>
+		</li>
 		
-
-		<div class="post-content"><p>One of the more interesting Machine Learning models is the Neural Network. A Neural Network is a highly non-linear mathmatical model that can be fitted to very complicated datasets, from image classification to text translation. In this blog post, we’ll be implementing our own simple Neural Network library in python, then test how our model performs through a practical example on an image classification dataset.</p>
-
+		
+		
+	</ul>
+	<ul id="contact-list-secondary" class="list-unstyled list-inline">
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://linkedin.com/in/phillip-williams-586a39b0">
+				<i class="fa fa-linkedin fa-lg"></i>
+			</a>
+		</li>
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="/feed.xml">
+				<i class="fa fa-rss fa-lg"></i>
+			</a>
+		</li>
+	</ul>
 </div>
-		<h3><a href="/2019/01/26/Implementing-A-Neural-Network/">Read more</a></h3>
+<!-- sidebar.html end -->
 
-	</article>
+	</div>
 
-
-
-	<article class="post">
-
-		
-			<h1><a href="/2019/01/23/Implementing-Logistic-Regression/">Implementing Logistic Regression</a></h1>
-		
-
-		<div class="post-content"><p>One of the simplest Machine Learning algorithms is Logistic Regression. At a conceptual level, there’s not much more to it than some simple calculus, but this algorithm can still be pretty effective in a lot of situations. In this post, we’re going to take a little bit of a look at the math behind Logistic Regression and then implement our own Logistic Regression library in python.</p>
-
+	<div class="col-sm-9 col-sm-offset-3">
+		<div class="page-header">
+  <h1>An Hour A Day </h1>
 </div>
-		<h3><a href="/2019/01/23/Implementing-Logistic-Regression/">Read more</a></h3>
-
-	</article>
 
 
 
-	<article class="post">
+<article class="home">
 
-		
-			<h1><a href="/2019/01/16/Amadios-Part-1/">Amadios - Part 1</a></h1>
-		
+  <span class="post-date">
+    
+    April
+    15th,
+    
+    2020
+  </span>
 
-		<div class="post-content"><p>A couple years ago, I worked on this really cool project called Amadios (a mashup of Amadeus Mozzart and iOS) for a demo competition. Basically, I made an iOS app that would take live audio and convert it to sheet music in real time. A lot of my friends and coworkers found this really cool, so I thought I’d make a series of blog posts explaining how this was accomplished.</p>
+  <h2>
+    <a href="/guides/2020/04/15/advice-for-students.html">How to get a job as a student</a>
+  </h2>
 
-</div>
-		<h3><a href="/2019/01/16/Amadios-Part-1/">Read more</a></h3>
+  <div>
+    
+    
+    <p>I’ve gotten a lot of questions on how to get a job as a student. Often students want to buff up their resumes or skills a few weeks before their interviews. Honestly, I don’t think there’s much you can do in less than a few months to improve your chances. Obviously you can review algorithms, practice questions and buff up you knowledge to give you a slight advantage, but if you really want to level up and give yourself the best chance at landing the type of jobs you want, you need to start at least 6 months in advance.</p>
 
-	</article>
-
-
-
-
-
-
-    </div>
-
-
-
+    
+    
   </div>
 
+</article>
 
 
-  <footer id="footer">
-    <p class="copyright">Copyright &copy; 2019 Phillip Williams. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="http://www.webmaster-source.com">Matt Harzewski</a></p>
-  </footer>
+<article class="home">
+
+  <span class="post-date">
+    
+    March
+    15th,
+    
+    2019
+  </span>
+
+  <h2>
+    <a href="/guides/2019/03/15/A-Primer-On-Computational-Geometry.html">A Primer On Computational Geometry</a>
+  </h2>
+
+  <div>
+    
+    
+    <p>There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.</p>
+
+    
+    
+  </div>
+
+</article>
+
+
+<article class="home">
+
+  <span class="post-date">
+    
+    January
+    26th,
+    
+    2019
+  </span>
+
+  <h2>
+    <a href="/guides/2019/01/26/Implementing-A-Neural-Network.html">Implementing a Neural Network</a>
+  </h2>
+
+  <div>
+    
+    
+    <p>One of the more interesting Machine Learning models is the Neural Network. A Neural Network is a highly non-linear mathmatical model that can be fitted to very complicated datasets, from image classification to text translation. In this blog post, we’ll be implementing our own simple Neural Network library in python, then test how our model performs through a practical example on an image classification dataset.</p>
+
+    
+    
+  </div>
+
+</article>
+
+
+<article class="home">
+
+  <span class="post-date">
+    
+    January
+    23rd,
+    
+    2019
+  </span>
+
+  <h2>
+    <a href="/guides/2019/01/23/Implementing-Logistic-Regression.html">Implementing Logistic Regression</a>
+  </h2>
+
+  <div>
+    
+    
+    <p>One of the simplest Machine Learning algorithms is Logistic Regression. At a conceptual level, there’s not much more to it than some simple calculus, but this algorithm can still be pretty effective in a lot of situations. In this post, we’re going to take a little bit of a look at the math behind Logistic Regression and then implement our own Logistic Regression library in python.</p>
+
+    
+    
+  </div>
+
+</article>
+
+
+<article class="home">
+
+  <span class="post-date">
+    
+    January
+    16th,
+    
+    2019
+  </span>
+
+  <h2>
+    <a href="/projects/2019/01/16/Amadios-Part-1.html">Amadios - Part 1</a>
+  </h2>
+
+  <div>
+    
+    
+    <p>A couple years ago, I worked on this really cool project called Amadios (a mashup of Amadeus Mozzart and iOS) for a demo competition. Basically, I made an iOS app that would take live audio and convert it to sheet music in real time. A lot of my friends and coworkers found this really cool, so I thought I’d make a series of blog posts explaining how this was accomplished.</p>
+
+    
+    
+  </div>
+
+</article>
+
+<hr/>
+
+<ul class="pager"> 
+
+  
+  <li class="previous disabled">
+    <a>&larr; Newer</a>
+  </li>
+  
+  
+  <li>
+    <span class="page_number">Page: 1 of 1</span>
+  </li>
+
+  
+  <li class="next disabled">
+    <a>Older &rarr;</a>        
+  </li>
+  
+
+</ul>
 
 
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-  <script src="/assets/js/jquery.mobilemenu.min.js"></script>
 
-  <script>
-    $(document).ready(function(){
-      $('#sidebar nav ul').mobileMenu({'topOptionText': 'Menu', 'prependTo': '#sidebar nav'});
-    });
-  </script>
+		<footer>
+			<hr/>
+			<p>
+				&copy; 2020 Phillip Williams with <a href="http://jekyllrb.com/">Jekyll</a>. Theme: <a href="https://github.com/dbtek/dbyll">dbyll</a> by dbtek.
+			</p>
+		</footer>
+	</div>
 
-
-
+	<script type="text/javascript" src="/assets/resources/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/js/app.js"></script>
 </body>
 </html>
+
+
+
+<!-- Asynchronous Google Analytics snippet -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'dbyll', 'auto');
+  ga('send', 'pageview');
+</script>
+

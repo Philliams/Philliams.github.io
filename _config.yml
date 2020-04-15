@@ -1,9 +1,42 @@
-name: Phillip Williams
-url: http://philliams.com
-description: An Hour a Day
+# visit https://github.com/mojombo/jekyll/wiki/Configuration for more settings
 
-permalink: /:year/:month/:day/:title/
-paginate: 10
+paginate: 10 # pagination based on number of posts
+paginate_path: "page:num"
+exclude: ["README.md"] # files to exclude
+highlighter: rouge
+markdown: kramdown
+disqus: dbyll
+google_analytics: dbyll
+title: An Hour A Day
 
-gems: [jekyll-paginate]
-exclude: ['README.md', 'Gemfile.lock', 'Gemfile', 'Rakefile']
+defaults:
+  -
+    scope:
+      path: "" # empty string for all files
+    values:
+      title: An Hour A Day
+
+description: A tech blog for my daily projects
+author:
+  name: Phillip Williams
+  email:
+  github: Philliams
+  twitter:
+  pinterest:
+  linkedin: phillip-williams-586a39b0
+  bio: A tech blog
+  email_md5:
+
+rss_path: feed.xml
+categories_path: categories.html
+tags_path: tags.html
+publications_path: publications.html
+about_path: about.html
+
+# set it as url of an image
+# sidebar_background_image: https://www.dropbox.com/s/g9h23zrycedxtk5/sky.png?raw=1
+
+BASE_PATH:
+
+plugins:
+  - jekyll-paginate

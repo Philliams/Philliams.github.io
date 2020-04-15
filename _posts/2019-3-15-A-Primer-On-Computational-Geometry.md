@@ -2,6 +2,8 @@
 layout: post
 mathjax: true
 title: A Primer On Computational Geometry
+tags: [Computational Geometry]
+categories: [Guides]
 ---
 
 There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.
@@ -60,7 +62,7 @@ $$
 
 The last operation that will be relevant is scalar projection. Scalar projection is a little strange, but you can imagine that the projection of a vector $ \vec{a} $ on another vector $ \vec{b} $ is the magnitude of the vector $ \vec{a} $ in the direction defined by $ \vec{b} $.
 
-<img src="{{ site.baseurl }}/images/vector_projection_white.png" width="500px" height="300px">
+<img src="{{ site.baseurl }}/images/vector_projection.png" width="500px" height="300px">
 
 Source : [Wikipedia, Vector Projection](https://en.wikipedia.org/wiki/Vector_projection)
 
@@ -118,7 +120,8 @@ $$ \vec{b} = \begin{bmatrix}
 4. Update $ p_0 $ to be the value of $ p_1 $ and $ p_1 $ to the value of $ p_2 $.
 5. repeat steps 2 to 4 until the $ p_2 $ chosen is the same as the starting point.
 
-<img src="{{ site.baseurl }}/images/gift_wrapping_algo_white.png" width="500px" height="300px">
+<img src="{{ site.baseurl }}/images/gift_wrapping_algo.png" width="500px" height="300px">
+
 Source : [Wikipedia, Gift Wrapping Algorithm](https://en.wikipedia.org/wiki/Gift_wrapping_algorithm)
 
 ### Calculating the Centroid of Convex Polygon
