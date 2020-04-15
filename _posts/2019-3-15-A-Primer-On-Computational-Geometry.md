@@ -2,6 +2,8 @@
 layout: post
 mathjax: true
 title: A Primer On Computational Geometry
+tags: [Computational Geometry]
+categories: [Guides]
 ---
 
 There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.
