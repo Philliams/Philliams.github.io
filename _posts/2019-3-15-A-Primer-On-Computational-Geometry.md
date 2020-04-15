@@ -118,7 +118,8 @@ $$ \vec{b} = \begin{bmatrix}
 4. Update $ p_0 $ to be the value of $ p_1 $ and $ p_1 $ to the value of $ p_2 $.
 5. repeat steps 2 to 4 until the $ p_2 $ chosen is the same as the starting point.
 
-<img src="{{ site.baseurl }}/images/gift_wrapping_algo_white.png" width="500px" height="300px">
+<img src="{{ site.baseurl }}/images/gift_wrapping_algo.png" width="500px" height="300px">
+
 Source : [Wikipedia, Gift Wrapping Algorithm](https://en.wikipedia.org/wiki/Gift_wrapping_algorithm)
 
 ### Calculating the Centroid of Convex Polygon
