@@ -1,0 +1,530 @@
+I"Ν<p>One of the more interesting Machine Learning models is the Neural Network. A Neural Network is a highly non-linear mathmatical model that can be fitted to very complicated datasets, from image classification to text translation. In this blog post, we’ll be implementing our own simple Neural Network library in python, then test how our model performs through a practical example on an image classification dataset.</p>
+
+<h3 id="what-is-a-neural-network">What is a Neural Network?</h3>
+
+<p>There are several types of Neural Networks, however we will be examining the simplest variant : a simple Feed-Forward Neural Network. In a Feed-Forward Neural Network, there are 3 main components :</p>
+<ol>
+  <li>Neurones</li>
+  <li>Activation Functions</li>
+  <li>Layers</li>
+</ol>
+
+<p>A neurone is a simple non-linear entity, it can be defined by the two following equations :</p>
+
+<script type="math/tex; mode=display">z = \sum{x_i \cdot w_i} + b</script>
+
+<script type="math/tex; mode=display">output = f(z)</script>
+
+<p>In this notation, the $ x_i $ values come from some input vector $ x $, while the $ w_i $ values come from the weights vector $ w $. The $ b $ term is called the bias and allows the neurone to learn an offset, while the weights correspond to how quickly the output changes with changes in the input.</p>
+
+<h3 id="activation-functions">Activation Functions</h3>
+
+<p>The output of the neurone is defined as $ f(z) $, but what is $ f(z) $? $ f(z) $ is called the Activation function and can be any more or less any function that has a defined derivative. Some common activations are the Sigmoid function (also called the logistic function), the Hyperbolic Tangent function and the Rectifier function.</p>
+
+<p>The Sigmoid function is defined as follows :</p>
+
+<script type="math/tex; mode=display">f(z) = \frac{1}{1+e^{-z}}</script>
+
+<canvas id="line-chart-1" width="800" height="450"></canvas>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+	var x = [];
+
+	for(var i = 0; i < 41; i++){
+		x.push( (i / 4) - 5);
+	}
+
+
+	new Chart(document.getElementById("line-chart-1"), {
+	  type: 'line',
+	  data: {
+	    labels: x,
+	    datasets: [{ 
+	        data: x.map(i => 1/(1+Math.exp(-i))),
+	        label: "f(z)",
+	        borderColor: "#8e5ea2",
+	        fill: false
+	      }
+	    ]
+	  },
+	  options: {
+	  	legend :{
+	  		display: false
+	  	},
+	  	tooltips :{
+	  		enabled: false
+	  	},
+	    title: {
+	      display: true,
+	      text: 'Sigmoid Function',
+	      fontColor: "#839496"
+	    },
+	    scales: {
+		    yAxes: [{
+		      gridLines: {
+			    color: "#839496"
+			  },
+		      ticks :{
+		      	fontColor: "#839496"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'f(z)',
+		        fontColor: "#839496"
+		      }
+		    }],
+		  xAxes: [{
+		  	  gridLines: {
+			    color: "#839496"
+			  },
+		  	  ticks :{
+		      	fontColor: "#839496"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'z',
+		        fontColor: "#839496"
+		      }
+		    }]
+		}     
+	  }
+	});
+	
+});
+</script>
+
+<p>The Hyperbolic Tangent function is defined as follows :</p>
+
+<script type="math/tex; mode=display">f(z) = \frac{e^{2z} - 1}{e^{2z} + 1}</script>
+
+<canvas id="line-chart-2" width="800" height="450"></canvas>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+	var x = [];
+
+	for(var i = 0; i < 41; i++){
+		x.push( (i / 4) - 5);
+	}
+
+
+	new Chart(document.getElementById("line-chart-2"), {
+	  type: 'line',
+	  data: {
+	    labels: x,
+	    datasets: [{ 
+	        data: x.map(i => (Math.exp(2*i) - 1)/(Math.exp(2*i) + 1)),
+	        label: "Tanh(z)",
+	        borderColor: "#8e5ea2",
+	        fill: false
+	      }
+	    ]
+	  },
+	  options: {
+	  	legend :{
+	  		display: false
+	  	},
+	  	tooltips :{
+	  		enabled: false
+	  	},
+	    title: {
+	      display: true,
+	      text: 'Hyperbolic Tangent Function',
+	      fontColor: "#839496"
+	    },
+	    scales: {
+		    yAxes: [{
+		      gridLines: {
+			    color: "#839496"
+			  },
+		      ticks :{
+		      	fontColor: "#839496"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'f(z)',
+		        fontColor: "#839496"
+		      }
+		    }],
+		  xAxes: [{
+		  	  gridLines: {
+			    color: "#839496"
+			  },
+		  	  ticks :{
+		      	fontColor: "#839496"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'z',
+		        fontColor: "#839496"
+		      }
+		    }]
+		}     
+	  }
+	});
+	
+});
+</script>
+
+<p>The Rectifier function is defined as follows :</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+f(z) = \left\{\begin{aligned}
+&0 &&if \; x \le 0\\
+&x &&if \; x > 0
+\end{aligned}
+\right. %]]></script>
+
+<canvas id="line-chart-3" width="800" height="450"></canvas>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+	var x = [];
+
+	for(var i = 0; i < 41; i++){
+		x.push( (i / 4) - 5);
+	}
+
+
+	new Chart(document.getElementById("line-chart-3"), {
+	  type: 'line',
+	  data: {
+	    labels: x,
+	    datasets: [{ 
+	        data: x.map(i => i <= 0 ? 0 : i),
+	        label: "Rectifier(z)",
+	        borderColor: "#8e5ea2",
+	        fill: false
+	      }
+	    ]
+	  },
+	  options: {
+	  	legend :{
+	  		display: false
+	  	},
+	  	tooltips :{
+	  		enabled: false
+	  	},
+	    title: {
+	      display: true,
+	      text: 'Rectifier Function',
+	      fontColor: "#839496"
+	    },
+	    scales: {
+		    yAxes: [{
+		      gridLines: {
+			    color: "#839496"
+			  },
+		      ticks :{
+		      	fontColor: "#839496"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'f(z)',
+		        fontColor: "#839496"
+		      }
+		    }],
+		  xAxes: [{
+		  	  gridLines: {
+			    color: "#839496"
+			  },
+		  	  ticks :{
+		      	fontColor: "#839496"
+		      },
+		      scaleLabel: {
+		        display: true,
+		        labelString: 'z',
+		        fontColor: "#839496"
+		      }
+		    }]
+		}     
+	  }
+	});
+	
+});
+</script>
+
+<p>An interesting fact about the Rectifier Function is that the derivative is not defined at 0, since the function is piecewise, however in practice we can simply decide what side of the piecewise function to use when calculating the derivative.</p>
+
+<p>Now that we have the defining equations for the neurones and the activation functions, we can arragne the neurones into layers to form an actual Neural Network. A Neural Network can be made up of a single neurone or thousands of them, but typically conforms to the following architecture :</p>
+
+<p><img src="/images/nn.svg" width="500px" height="300px" /></p>
+
+<p>In the diagram above, the input layer represents the raw numerical input vector, each circle in the input layer represents a single input dimension, so if there is 16 circles in the input layer, we can imagine that the neural network will receive a vector of 16 values as input. We call these input values features.</p>
+
+<p>The lines represent the connections between the neurones, so if there is a line between two neurones, the output of the neurone on the left will be taken as an input to the neurone on the right.</p>
+
+<p>For the hidden and output layers, each circle represents a single neurone, and as you can see, all the outputs from one layer are fed in as inputs to all the neurones in the next layer.</p>
+
+<p>The number of layers, and the number of neurones in each layer is determined experimentally or inspired by heuristics, however the input and output layer sizes are usually determined by the available data. For example, you may try to predict a set of 3 values based on an input vector with 32 features.</p>
+
+<p>With the structure of the Neural Network defined, and the functions within the neurones given, we can establish how to actually solve for the weights that will give the best performance.</p>
+
+<h3 id="gradient-descent-and-backpropagation">Gradient Descent and Backpropagation</h3>
+
+<p>There are two algorithms used to solve for the weights of a neural network: Gradient Descent and Backpropagation. First let’s look at the output neurones of the network.</p>
+
+<p>To understand Gradient Descent, we need to choose a cost function $ C $. This cost function should decrease as performance gets better, this way we can frame the problem as optimizing the weights of each neurone in the network to minimize the cost (or error) of the network. For our network we will be using the mean squared error (MSE), which is defined as follows :</p>
+
+<script type="math/tex; mode=display">E = \frac{1}{2} ( y - \hat{y} )^2</script>
+
+<p>Basically, the further away we are from the right answer, the larger our cost $ C $ is. Note that $ y $ is the desired output for a given input, and $ \hat{y} $ is the prediction made by the output Neurone for that same input. We can derive the cost so that we can figure out how the cost changes with the output of the neurone :</p>
+
+<script type="math/tex; mode=display">\frac{\partial{E}}{\partial{\hat{y}}} = y - \hat{y}</script>
+
+<p>But we what we really want to know is how the cost changes with a change in the weights, since that would allow us to optimize the weights directly :</p>
+
+<script type="math/tex; mode=display">\frac{\partial{E}}{\partial{z}} = \frac{\partial{E}}{\partial{\hat{y}}} \cdot \frac{\partial{\hat{y}}}{\partial{z}}</script>
+
+<script type="math/tex; mode=display">\frac{\partial{C}}{\partial{w_i}} = \frac{\partial{C}}{\partial{\hat{y}}} \cdot \frac{\partial{\hat{y}}}{\partial{z}} \cdot \frac{\partial{z}}{\partial{w_i}}</script>
+
+<p>But from earlier, we know that $ \hat{y} = f(z) $ and $ z = b + \sum{w_i \cdot x_i} $, so our final equation for the derivatives of the output neurones is :</p>
+
+<script type="math/tex; mode=display">\frac{\partial{E}}{\partial{w_i}} = (y - \hat{y}) \cdot f^{'}(z) \cdot x_i</script>
+
+<script type="math/tex; mode=display">\frac{\partial{E}}{\partial{b}} = (y - \hat{y}) \cdot f^{'}(z)</script>
+
+<p>So now that we have the derivative, what do we do? Here, we apply Gradient Descent. Basically, using the derivative we can figure out if an increase or a decrease of the value of the weight will decrease the cost, then we iteratively update the weights to minimize the weight. $ \eta $ is called the learning rate and is a constant chosen to adjust the step size of the iterations.</p>
+
+<script type="math/tex; mode=display">w_{t+1} = w_t + \eta \cdot \frac{\partial{E}}{\partial{w_i}}</script>
+
+<script type="math/tex; mode=display">b_{t+1} = b_t + \eta \cdot \frac{\partial{E}}{\partial{b}}</script>
+
+<p>However, in the hidden layers, we don’t know what the desired output of the specific neurone is, this is where backpropagation comes in handy. Basically, we will propagate the errors of the output layer back through the network so that we can calculate the derivatives of the weights relative to the cost for all of the weights.</p>
+
+<p>For this, we will need to define another equations. We replace the $ \frac{\partial{E}}{\partial{\hat{y}}} $ as :</p>
+
+<script type="math/tex; mode=display">\frac{\partial{E}}{\partial{\hat{y}}} = \sum{ \left( w_{i} \cdot \frac{\partial{E}}{\partial{z_{i}}} \right) }</script>
+
+<p>Essentially, the for a node in a hidden layer is equal to the weighted sums of the derivatives of the next layer. The weights used are simply the weights of the nodes in the next layer for that given node.</p>
+
+<p>We can apply all the same equations as before when calculating the derivatives as before, we simply need to calculate the initial $ \frac{\partial{E}}{\partial{\hat{y}}} $ of the output layer, then use the derivative equations to propagate the derivatives through the network, then finally update the weights after we’ve calculated the relevant values.</p>
+
+<p>Now that all the of the theoretical equations have been established, we can actually implement our model and test it on some real world data. For this example, we will be using the <a href="https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)">UCI ML Breast Cancer Wisconsin (Diagnostic) dataset</a>. You can download a copy of the dataset directly, or you can import it through the <a href="https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html">Scikit learn dataset module</a>. We are trying to predict if a tumor is bening or malignant with several features such as the radius, symmetry, smoothness and texture.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="c1"># implementation of sigmoid neurones in a layer
+</span><span class="k">class</span> <span class="nc">SigmoidLayer</span><span class="p">():</span>
+
+	<span class="c1"># layer is defined by the input size and the number of neurones
+</span>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">number_of_neurones</span><span class="p">):</span>
+		<span class="bp">self</span><span class="p">.</span><span class="n">input_size</span> <span class="o">=</span> <span class="n">input_size</span>
+		<span class="bp">self</span><span class="p">.</span><span class="n">number_of_neurones</span> <span class="o">=</span> <span class="n">number_of_neurones</span>
+
+		<span class="c1"># generate the weights as random numpy arrays of small values
+</span>		<span class="c1"># different initiliaztion schemes can be used for the weights with varying experimental success
+</span>		<span class="bp">self</span><span class="p">.</span><span class="n">biases</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">number_of_neurones</span><span class="p">)</span>
+		<span class="bp">self</span><span class="p">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">normal</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="p">(</span><span class="n">number_of_neurones</span><span class="p">,</span> <span class="n">input_size</span><span class="p">))</span>
+
+	<span class="c1"># defined the sigmoid function
+</span>	<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+		<span class="k">return</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">math</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+	<span class="c1"># calculate the output of the neurones as a vector, based on an input vector to the layer
+</span>	<span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+		<span class="c1"># initialize layer output, output will be of length self.number_of_neurones
+</span>		<span class="n">output_vector</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="c1"># iterate over each neurone in the layer
+</span>		<span class="k">for</span> <span class="n">neurone</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">number_of_neurones</span><span class="p">):</span>
+
+			<span class="c1"># retrieve the bias term for the given neurone
+</span>			<span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">biases</span><span class="p">[</span><span class="n">neurone</span><span class="p">]</span>
+
+			<span class="c1"># calculate the weighted sum and add it to the initial bias term
+</span>			<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">input_size</span><span class="p">):</span>
+				<span class="n">z</span> <span class="o">+=</span> <span class="bp">self</span><span class="p">.</span><span class="n">weights</span><span class="p">[</span><span class="n">neurone</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span>
+
+			<span class="c1"># apply the activation function
+</span>			<span class="n">neurone_output</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+			<span class="c1"># add the output of the given neurone to the layer output
+</span>			<span class="n">output_vector</span> <span class="o">+=</span> <span class="p">[</span><span class="n">neurone_output</span><span class="p">]</span>
+
+		<span class="c1"># return the output of the layer as a vector
+</span>		<span class="k">return</span> <span class="n">numpy</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">output_vector</span><span class="p">)</span>
+
+	<span class="c1"># calculate the backpropagation step for the layer as well as update the weights, based on the last input, output
+</span>	<span class="c1"># and the derivatives of the layer, will output the derivatives needed for the previous layer
+</span>	<span class="k">def</span> <span class="nf">backpropagate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">last_input</span><span class="p">,</span> <span class="n">last_output</span><span class="p">,</span> <span class="n">dE_dy</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+
+		<span class="n">dE_dz</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="c1"># use the dE_dy of the layer to calculate the dE_dz of each neurone in the layer
+</span>		<span class="k">for</span> <span class="n">neurone</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">number_of_neurones</span><span class="p">):</span>
+
+			<span class="c1"># apply the derivative of the sigmoid function
+</span>			<span class="n">neurone_dE_dz</span> <span class="o">=</span> <span class="n">last_output</span><span class="p">[</span><span class="n">neurone</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">last_output</span><span class="p">[</span><span class="n">neurone</span><span class="p">])</span> <span class="o">*</span> <span class="n">dE_dy</span><span class="p">[</span><span class="n">neurone</span><span class="p">]</span>
+
+			<span class="c1"># keep track of the derivatives of each neurone
+</span>			<span class="n">dE_dz</span> <span class="o">+=</span> <span class="p">[</span><span class="n">neurone_dE_dz</span><span class="p">]</span>
+
+		<span class="n">dE_dz</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">dE_dz</span><span class="p">)</span>
+
+		<span class="c1"># use the dE_dz derivative as well as the last input to update the weights and biases
+</span>		<span class="c1"># this is the gradient descent step
+</span>		<span class="k">for</span> <span class="n">neurone</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">number_of_neurones</span><span class="p">):</span>
+
+			<span class="c1"># update the bias of each neurone in the layer
+</span>			<span class="bp">self</span><span class="p">.</span><span class="n">biases</span><span class="p">[</span><span class="n">neurone</span><span class="p">]</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">dE_dz</span><span class="p">[</span><span class="n">neurone</span><span class="p">]</span>
+			<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">input_size</span><span class="p">):</span>
+
+				<span class="c1"># calculate the derivative relative to each weight, then update each weight for each neurone
+</span>				<span class="bp">self</span><span class="p">.</span><span class="n">weights</span><span class="p">[</span><span class="n">neurone</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">last_input</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">*</span> <span class="n">dE_dz</span><span class="p">[</span><span class="n">neurone</span><span class="p">]</span>
+
+		<span class="c1"># calculate the dE_dy derivative to be used by the following layer
+</span>		<span class="n">next_layer_dE_dy</span> <span class="o">=</span> <span class="n">numpy</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">input_size</span><span class="p">)</span>
+
+		<span class="c1"># iterate over each neurone
+</span>		<span class="k">for</span> <span class="n">neurone</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">number_of_neurones</span><span class="p">):</span>
+
+			<span class="c1"># iterate over each weight
+</span>			<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">input_size</span><span class="p">):</span>
+
+				<span class="c1"># calculate the derivative using the backpropagation rule
+</span>				<span class="n">next_layer_dE_dy</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="p">.</span><span class="n">weights</span><span class="p">[</span><span class="n">neurone</span><span class="p">][</span><span class="n">feature</span><span class="p">]</span> <span class="o">*</span> <span class="n">dE_dz</span><span class="p">[</span><span class="n">neurone</span><span class="p">]</span>
+
+		<span class="k">return</span> <span class="n">next_layer_dE_dy</span>
+
+<span class="c1"># implement Neural Network using sigmoid layer
+</span><span class="k">class</span> <span class="nc">SigmoidFeedForwardNeuralNetwork</span><span class="p">():</span>
+
+	<span class="c1"># we need the number and sizes of the layers, the input size and the learning rate for the network
+</span>	<span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">layer_sizes</span><span class="p">):</span>
+		<span class="bp">self</span><span class="p">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+		<span class="bp">self</span><span class="p">.</span><span class="n">layers</span> <span class="o">=</span> <span class="bp">None</span>
+
+		<span class="c1"># initialize each layer based on the defined sizes
+</span>		<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">layer_sizes</span><span class="p">)):</span>
+
+			<span class="c1"># input size of first layer is input size
+</span>			<span class="k">if</span> <span class="n">layer</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+				<span class="bp">self</span><span class="p">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="n">SigmoidLayer</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">layer_sizes</span><span class="p">[</span><span class="n">layer</span><span class="p">])]</span>
+			<span class="c1"># input size of every other layer is the size of the previous layer
+</span>			<span class="k">else</span><span class="p">:</span>
+				<span class="bp">self</span><span class="p">.</span><span class="n">layers</span> <span class="o">+=</span> <span class="p">[</span><span class="n">SigmoidLayer</span><span class="p">(</span><span class="n">layer_sizes</span><span class="p">[</span><span class="n">layer</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">layer_sizes</span><span class="p">[</span><span class="n">layer</span><span class="p">])]</span>
+
+	<span class="c1"># calculate the output of the neural network for a given input layer
+</span>	<span class="k">def</span> <span class="nf">predict_on_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+
+		<span class="c1"># feed the output of each layer as the input to the next layer
+</span>		<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">layers</span><span class="p">:</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">.</span><span class="n">output</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+		<span class="c1"># return the output of the last layer
+</span>		<span class="k">return</span> <span class="n">x</span>
+
+	<span class="c1"># calculate the outputs of the neural network for a list of vectors
+</span>	<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+
+		<span class="c1"># calculate the prediction for each vector
+</span>		<span class="n">predictions</span> <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="c1"># make a prediction for each vector in the set
+</span>		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)):</span>
+
+			<span class="n">prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">predict_on_vector</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+			<span class="n">predictions</span> <span class="o">+=</span> <span class="p">[</span><span class="n">prediction</span><span class="p">]</span>
+
+		<span class="c1"># return all of the predictions
+</span>		<span class="k">return</span> <span class="n">numpy</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+
+	<span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+		<span class="c1"># generate a list of indexes for the training samples
+</span>		<span class="n">training_samples</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))]</span>
+
+		<span class="c1"># do k iterations of training on the dataset
+</span>		<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+
+			<span class="c1"># print training progress
+</span>			<span class="k">print</span><span class="p">(</span><span class="s">"Epoch : "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+
+			<span class="c1"># randomly shuffle dataset to avoid getting stuck in local minima
+</span>			<span class="c1"># random.shuffle(training_samples)
+</span>
+			<span class="c1"># train on each sample
+</span>			<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">training_samples</span><span class="p">:</span>
+				<span class="bp">self</span><span class="p">.</span><span class="n">train_on_vector</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+
+	<span class="c1"># train the Neural Network on a single vector, this training scheme is know as "on-line" training
+</span>	<span class="c1"># as the neural network is updated every time a new vector is given
+</span>	<span class="k">def</span> <span class="nf">train_on_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+		<span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+		<span class="n">inputs</span>  <span class="o">=</span> <span class="p">[]</span>
+
+		<span class="c1"># iterate over each layer and keep track of the inputs and output
+</span>		<span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">layers</span><span class="p">:</span>
+			<span class="n">inputs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="p">.</span><span class="n">output</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+			<span class="n">outputs</span> <span class="o">+=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+
+		<span class="c1"># calculate the error vector of the output neurones
+</span>		<span class="n">error_vector</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+
+		<span class="c1"># iterate over each layer and apply the backpropagation, starting
+</span>		<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">layers</span><span class="p">)):</span>
+			<span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">layers</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span>
+
+			<span class="c1"># update the weights of the layers and retrieve the next layer's error vector
+</span>			<span class="n">error_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">layers</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">backpropagate</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">outputs</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">error_vector</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">learning_rate</span><span class="p">)</span>
+
+
+
+
+<span class="c1"># Apply the logistic regression model to the UCI ML Breast Cancer Wisconsin (Diagnostic) dataset
+</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="n">label</span><span class="p">])</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">Y</span><span class="p">]</span>
+
+<span class="c1">#split the data into training and testing sets
+</span><span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="mi">100</span><span class="p">:]</span>
+
+<span class="n">Y_test</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">Y</span><span class="p">[</span><span class="mi">100</span><span class="p">:]</span>
+
+<span class="c1"># Initialize the model
+</span><span class="n">model</span> <span class="o">=</span> <span class="n">SigmoidFeedForwardNeuralNetwork</span><span class="p">(</span><span class="mf">1e-1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Train the model on the training set
+</span><span class="n">model</span><span class="p">.</span><span class="n">train</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+
+<span class="c1"># calculate the accuracy on the training set
+</span><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="n">accuracy</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)):</span>
+	<span class="k">if</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+		<span class="n">accuracy</span> <span class="o">+=</span> <span class="mi">1</span>
+	<span class="k">elif</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="n">accuracy</span> <span class="o">+=</span> <span class="mi">1</span>
+		
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Training Accuracy (%) = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mf">100.</span> <span class="o">*</span> <span class="n">accuracy</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">))))</span>
+
+<span class="c1"># calculate the accuracy on the testing set
+</span><span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">accuracy</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)):</span>
+	<span class="k">if</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">Y_test</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+		<span class="n">accuracy</span> <span class="o">+=</span> <span class="mi">1</span>
+	<span class="k">elif</span> <span class="n">predictions</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.5</span> <span class="ow">and</span> <span class="n">Y_test</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="n">accuracy</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Testing Accuracy (%) = "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mf">100.</span> <span class="o">*</span> <span class="n">accuracy</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">))))</span></code></pre></figure>
+
+<h3 id="references">References</h3>
+
+<ol>
+  <li><a href="https://google-developers.appspot.com/machine-learning/crash-course/backprop-scroll/">Backpropagation Algorithm - Google Developers Machine Learning Crash Course</a></li>
+</ol>
+:ET
