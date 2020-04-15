@@ -60,7 +60,7 @@ $$
 
 The last operation that will be relevant is scalar projection. Scalar projection is a little strange, but you can imagine that the projection of a vector $ \vec{a} $ on another vector $ \vec{b} $ is the magnitude of the vector $ \vec{a} $ in the direction defined by $ \vec{b} $.
 
-<img src="{{ site.baseurl }}/images/vector_projection_white.png" width="500px" height="300px">
+<img src="{{ site.baseurl }}/images/vector_projection.png" width="500px" height="300px">
 
 Source : [Wikipedia, Vector Projection](https://en.wikipedia.org/wiki/Vector_projection)
 

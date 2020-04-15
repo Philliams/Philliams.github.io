@@ -1,4 +1,4 @@
-I"`"<p>There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.</p>
+I"Z"<p>There are many interesting problems and algorithms in the field of Computational Geometry. The aim of this post is not to be an overview of significant areas or a road map to learning the field, but rather a primer for the University of Ottawa Computer Science Games team for challenges involving Geometry problems. We will cover basic vectors, matrices and linear algebra as well as various novice and intermediate applications of Computational Geometry.</p>
 
 <h3 id="introduction-to-vectors">Introduction to Vectors</h3>
 
@@ -34,7 +34,7 @@
 
 <p>The last operation that will be relevant is scalar projection. Scalar projection is a little strange, but you can imagine that the projection of a vector $ \vec{a} $ on another vector $ \vec{b} $ is the magnitude of the vector $ \vec{a} $ in the direction defined by $ \vec{b} $.</p>
 
-<p><img src="/images/vector_projection_white.png" width="500px" height="300px" /></p>
+<p><img src="/images/vector_projection.png" width="500px" height="300px" /></p>
 
 <p>Source : <a href="https://en.wikipedia.org/wiki/Vector_projection">Wikipedia, Vector Projection</a></p>
 
